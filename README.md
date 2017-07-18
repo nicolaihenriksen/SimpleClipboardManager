@@ -1,0 +1,2 @@
+# SimpleClipboardManager
+Simple clipboard manager

@@ -20,15 +20,9 @@ namespace SimpleClipboardManager
                 Icon = Resources.AppIcon,
                 ContextMenu = new ContextMenu(new MenuItem[] {
                 new MenuItem("Exit", Exit),
-                new MenuItem("Print", Print)
             }),
                 Visible = true
             };
-        }
-
-        void Print(object sender, EventArgs e)
-        {
-            _manager.PrintHistory();
         }
 
         void Exit(object sender, EventArgs e)

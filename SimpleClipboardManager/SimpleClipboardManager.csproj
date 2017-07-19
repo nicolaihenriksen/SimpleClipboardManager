@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipboardItem.cs" />
     <Compile Include="ClipboardManager.cs" />
     <Compile Include="ClipboardManagerContext.cs" />
     <Compile Include="ClipboardNotification.cs" />
@@ -54,9 +58,14 @@
     <Compile Include="ContextMenuForm.Designer.cs">
       <DependentUpon>ContextMenuForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InterceptKeys.cs" />
+    <Compile Include="GraphicsExtension.cs" />
+    <Compile Include="HotKeyManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoundCornerPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SafeNativeMethods.cs" />
     <EmbeddedResource Include="ContextMenuForm.resx">
       <DependentUpon>ContextMenuForm.cs</DependentUpon>
     </EmbeddedResource>

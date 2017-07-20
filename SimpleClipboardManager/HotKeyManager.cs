@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -7,45 +6,16 @@ namespace SimpleClipboardManager
 {
     public static class HotKeyManager
     {
-        public static event EventHandler<HotKeyEventArgs> HotKeyPressed;
+        public static event Action<HotKeyEventArgs> HotKeyPressed;
 
-        public static int RegisterHotKey(Keys key, KeyModifiers modifiers)
-        {
-            _windowReadyEvent.WaitOne();
-            int id = System.Threading.Interlocked.Increment(ref _id);
-            _wnd.Invoke(new RegisterHotKeyDelegate(RegisterHotKeyInternal), _hwnd, id, (uint)modifiers, (uint)key);
-            return id;
-        }
-
-        public static void UnregisterHotKey(int id)
-        {
-            _wnd.Invoke(new UnRegisterHotKeyDelegate(UnRegisterHotKeyInternal), _hwnd, id);
-        }
-
-        delegate void RegisterHotKeyDelegate(IntPtr hwnd, int id, uint modifiers, uint key);
-        delegate void UnRegisterHotKeyDelegate(IntPtr hwnd, int id);
-
-        private static void RegisterHotKeyInternal(IntPtr hwnd, int id, uint modifiers, uint key)
-        {
-            RegisterHotKey(hwnd, id, modifiers, key);
-        }
-
-        private static void UnRegisterHotKeyInternal(IntPtr hwnd, int id)
-        {
-            UnregisterHotKey(_hwnd, id);
-        }
-
-        private static void OnHotKeyPressed(HotKeyEventArgs e)
-        {
-            if (HotKeyManager.HotKeyPressed != null)
-            {
-                HotKeyManager.HotKeyPressed(null, e);
-            }
-        }
+        private delegate void RegisterHotKeyDelegate(IntPtr hwnd, int id, uint modifiers, uint key);
+        private delegate void UnRegisterHotKeyDelegate(IntPtr hwnd, int id);
 
         private static volatile MessageWindow _wnd;
         private static volatile IntPtr _hwnd;
         private static ManualResetEvent _windowReadyEvent = new ManualResetEvent(false);
+        private static int _id = 0;
+
         static HotKeyManager()
         {
             Thread messageLoop = new Thread(delegate ()
@@ -57,8 +27,38 @@ namespace SimpleClipboardManager
             messageLoop.Start();
         }
 
+        public static int RegisterHotKey(Keys key, KeyModifiers modifiers)
+        {
+            _windowReadyEvent.WaitOne();
+            int id = Interlocked.Increment(ref _id);
+            _wnd.Invoke(new RegisterHotKeyDelegate(RegisterHotKeyInternal), _hwnd, id, (uint)modifiers, (uint)key);
+            return id;
+        }
+
+        public static void UnregisterHotKey(int id)
+        {
+            _wnd.Invoke(new UnRegisterHotKeyDelegate(UnRegisterHotKeyInternal), _hwnd, id);
+        }
+
+        private static void RegisterHotKeyInternal(IntPtr hwnd, int id, uint modifiers, uint key)
+        {
+            SafeNativeMethods.RegisterHotKey(hwnd, id, modifiers, key);
+        }
+
+        private static void UnRegisterHotKeyInternal(IntPtr hwnd, int id)
+        {
+            SafeNativeMethods.UnregisterHotKey(_hwnd, id);
+        }
+
+        private static void OnHotKeyPressed(HotKeyEventArgs e)
+        {
+            HotKeyPressed?.Invoke(e);
+        }
+
         private class MessageWindow : Form
         {
+            private const int WM_HOTKEY = 0x312;
+
             public MessageWindow()
             {
                 _wnd = this;
@@ -71,9 +71,8 @@ namespace SimpleClipboardManager
                 if (m.Msg == WM_HOTKEY)
                 {
                     HotKeyEventArgs e = new HotKeyEventArgs(m.LParam);
-                    HotKeyManager.OnHotKeyPressed(e);
+                    OnHotKeyPressed(e);
                 }
-
                 base.WndProc(ref m);
             }
 
@@ -82,19 +81,8 @@ namespace SimpleClipboardManager
                 // Ensure the window never becomes visible
                 base.SetVisibleCore(false);
             }
-
-            private const int WM_HOTKEY = 0x312;
         }
-
-        [DllImport("user32", SetLastError = true)]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-
-        [DllImport("user32", SetLastError = true)]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        private static int _id = 0;
     }
-
 
     public class HotKeyEventArgs : EventArgs
     {
@@ -103,8 +91,8 @@ namespace SimpleClipboardManager
 
         public HotKeyEventArgs(Keys key, KeyModifiers modifiers)
         {
-            this.Key = key;
-            this.Modifiers = modifiers;
+            Key = key;
+            Modifiers = modifiers;
         }
 
         public HotKeyEventArgs(IntPtr hotKeyParam)

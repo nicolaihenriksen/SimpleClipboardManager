@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
@@ -10,42 +9,29 @@ namespace SimpleClipboardManager
     {
         private const string ClipboardDataFileName = "clipboard.data";
         private List<ClipboardItem> _clipboardItems = new List<ClipboardItem>();
-
         private ContextMenuForm _contextMenuForm;
 
         public ClipboardManager()
         {
             ClipboardNotification.ClipboardUpdated += ClipboardNotification_ClipboardUpdated;
-            //InterceptKeys.KeysPressed += KeyInterceptor_KeysPressed;
             HotKeyManager.RegisterHotKey(Keys.Insert, KeyModifiers.Control);
             HotKeyManager.HotKeyPressed += HotKeyManager_HotKeyPressed;
             LoadClipboard();
         }
 
-        private void HotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
+        private void HotKeyManager_HotKeyPressed(HotKeyEventArgs e)
         {
             if (_contextMenuForm?.Visible == true)
             {
-                //_contextMenuForm.Invoke(new Action(_contextMenuForm.BringInFocus));
                 _contextMenuForm.BringInFocus();
+                return;
             }
-            else
-            {
-                _contextMenuForm = new ContextMenuForm(this, _clipboardItems);
-                _contextMenuForm.FormClosed += (s, e1) => _contextMenuForm = null;
-                try
-                {
-                    //_contextMenuForm.Invoke(new Action(() => _contextMenuForm.ShowDialog()));
-                    _contextMenuForm.ShowDialog();
-                }
-                catch
-                {
-
-                }
-            }
+            _contextMenuForm = new ContextMenuForm(this, _clipboardItems);
+            _contextMenuForm.FormClosed += (s, e1) => _contextMenuForm = null;
+            _contextMenuForm.ShowDialog();
         }
 
-        private void ClipboardNotification_ClipboardUpdated(object sender, string text)
+        private void ClipboardNotification_ClipboardUpdated(string text)
         {
             _clipboardItems.Insert(0, new ClipboardItem { Text = text });
             SaveClipboard();

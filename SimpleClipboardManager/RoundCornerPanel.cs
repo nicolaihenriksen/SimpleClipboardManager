@@ -8,6 +8,8 @@ namespace SimpleClipboardManager
     {
         public Color BackgroundColor { get; set; } = Color.Black;
 
+        public int Radius { get; set; } = 15;
+
         public RoundCornerPanel()
         {
             
@@ -15,9 +17,10 @@ namespace SimpleClipboardManager
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            var padding = 1;
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.FillRoundedRectangle(new SolidBrush(BackgroundColor), 10, 10, this.Width - 20, this.Height - 20, 10);
+            g.FillRoundedRectangle(new SolidBrush(BackgroundColor), padding, padding, this.Width - 2 * padding, this.Height - 2 * padding, Radius);
         }
     }
 }

@@ -7,20 +7,18 @@ namespace SimpleClipboardManager
     class ClipboardManagerContext : ApplicationContext
     {
         private NotifyIcon _trayIcon;
-
         private ClipboardManager _manager;
 
         public ClipboardManagerContext()
         {
             _manager = new ClipboardManager();
 
-            // Initialize Tray Icon
             _trayIcon = new NotifyIcon()
             {
                 Icon = Resources.AppIcon,
                 ContextMenu = new ContextMenu(new MenuItem[] {
-                new MenuItem("Exit", Exit),
-            }),
+                    new MenuItem("Exit", Exit),
+                }),
                 Visible = true
             };
         }
@@ -29,7 +27,6 @@ namespace SimpleClipboardManager
         {
             // Hide tray icon, otherwise it will remain shown until user mouses over it
             _trayIcon.Visible = false;
-
             Application.Exit();
         }
     }

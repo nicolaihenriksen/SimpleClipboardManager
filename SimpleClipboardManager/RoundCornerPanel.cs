@@ -10,11 +10,6 @@ namespace SimpleClipboardManager
 
         public int Radius { get; set; } = 15;
 
-        public RoundCornerPanel()
-        {
-            
-        }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             var padding = 1;

@@ -35,18 +35,19 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.LblHints = new System.Windows.Forms.Label();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.BtnClose = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.BtnSettings = new System.Windows.Forms.PictureBox();
+            this.BtnClear = new System.Windows.Forms.PictureBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.LblPasteAppName = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.roundCornerPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BtnClose)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnSettings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnClear)).BeginInit();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // clipboardItemList
@@ -57,7 +58,7 @@
             this.clipboardItemList.Location = new System.Drawing.Point(6, 6);
             this.clipboardItemList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 0);
             this.clipboardItemList.Name = "clipboardItemList";
-            this.clipboardItemList.Size = new System.Drawing.Size(568, 119);
+            this.clipboardItemList.Size = new System.Drawing.Size(785, 119);
             this.clipboardItemList.TabIndex = 1;
             // 
             // tableLayoutPanel1
@@ -65,14 +66,15 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.roundCornerPanel1, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(586, 227);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(803, 227);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
             // roundCornerPanel1
@@ -85,7 +87,7 @@
             this.roundCornerPanel1.Name = "roundCornerPanel1";
             this.roundCornerPanel1.Padding = new System.Windows.Forms.Padding(3);
             this.roundCornerPanel1.Radius = 15;
-            this.roundCornerPanel1.Size = new System.Drawing.Size(586, 201);
+            this.roundCornerPanel1.Size = new System.Drawing.Size(803, 201);
             this.roundCornerPanel1.TabIndex = 3;
             // 
             // tableLayoutPanel3
@@ -102,7 +104,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(580, 195);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(797, 195);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // flowLayoutPanel2
@@ -113,7 +115,7 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(8, 125);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(572, 70);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(789, 70);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
             // LblHints
@@ -129,57 +131,81 @@
             this.LblHints.TabIndex = 0;
             this.LblHints.Text = "<hints>";
             // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.BtnClose);
-            this.flowLayoutPanel1.Controls.Add(this.pictureBox1);
-            this.flowLayoutPanel1.Controls.Add(this.pictureBox2);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(10, 0);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(10, 0, 10, 1);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(566, 25);
-            this.flowLayoutPanel1.TabIndex = 4;
-            // 
             // BtnClose
             // 
             this.BtnClose.Image = ((System.Drawing.Image)(resources.GetObject("BtnClose.Image")));
-            this.BtnClose.Location = new System.Drawing.Point(540, 0);
-            this.BtnClose.Margin = new System.Windows.Forms.Padding(0);
+            this.BtnClose.Location = new System.Drawing.Point(767, 0);
+            this.BtnClose.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
             this.BtnClose.Name = "BtnClose";
             this.BtnClose.Size = new System.Drawing.Size(26, 26);
             this.BtnClose.TabIndex = 0;
             this.BtnClose.TabStop = false;
             this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
             // 
-            // pictureBox1
+            // BtnSettings
             // 
-            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(511, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(26, 26);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.BtnSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.BtnSettings.Image = ((System.Drawing.Image)(resources.GetObject("BtnSettings.Image")));
+            this.BtnSettings.Location = new System.Drawing.Point(738, 0);
+            this.BtnSettings.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.BtnSettings.Name = "BtnSettings";
+            this.BtnSettings.Size = new System.Drawing.Size(26, 26);
+            this.BtnSettings.TabIndex = 1;
+            this.BtnSettings.TabStop = false;
+            this.BtnSettings.Click += new System.EventHandler(this.BtnSettings_Click);
             // 
-            // pictureBox2
+            // BtnClear
             // 
-            this.pictureBox2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pictureBox2.Image = global::SimpleClipboardManager.Properties.Resources.Clear;
-            this.pictureBox2.Location = new System.Drawing.Point(5, 0);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(0, 0, 450, 0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(56, 26);
-            this.pictureBox2.TabIndex = 2;
-            this.pictureBox2.TabStop = false;
+            this.BtnClear.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.BtnClear.Image = global::SimpleClipboardManager.Properties.Resources.Clear;
+            this.BtnClear.Location = new System.Drawing.Point(679, 0);
+            this.BtnClear.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.BtnClear.Name = "BtnClear";
+            this.BtnClear.Size = new System.Drawing.Size(56, 26);
+            this.BtnClear.TabIndex = 2;
+            this.BtnClear.TabStop = false;
+            this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.BtnClose, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.BtnClear, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.BtnSettings, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.LblPasteAppName, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(803, 26);
+            this.tableLayoutPanel2.TabIndex = 3;
+            // 
+            // LblPasteAppName
+            // 
+            this.LblPasteAppName.AutoSize = true;
+            this.LblPasteAppName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LblPasteAppName.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblPasteAppName.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.LblPasteAppName.Location = new System.Drawing.Point(13, 0);
+            this.LblPasteAppName.Margin = new System.Windows.Forms.Padding(13, 0, 3, 0);
+            this.LblPasteAppName.Name = "LblPasteAppName";
+            this.LblPasteAppName.Size = new System.Drawing.Size(663, 26);
+            this.LblPasteAppName.TabIndex = 3;
+            this.LblPasteAppName.Text = "<app name>";
+            this.LblPasteAppName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ContextMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(586, 227);
+            this.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.ClientSize = new System.Drawing.Size(803, 227);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -192,10 +218,11 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BtnClose)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnSettings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnClear)).EndInit();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -205,11 +232,12 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private RoundCornerPanel roundCornerPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.PictureBox BtnClose;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox BtnSettings;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label LblHints;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox BtnClear;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.Label LblPasteAppName;
     }
 }

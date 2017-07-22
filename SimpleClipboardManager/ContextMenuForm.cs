@@ -1,6 +1,8 @@
-﻿using System;
+﻿using SimpleClipboardManager.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -29,13 +31,17 @@ namespace SimpleClipboardManager
                     HighlightFistClipboardItem();
                 _previouslyActivated = true;
             };
-            TransparencyKey = Color.Blue;
-            BackColor = Color.Blue;
+            FormBorderStyle = FormBorderStyle.None;
+            Opacity = 0.9;
             int displayedItemCount = Math.Min(7, items.Count);
             displayedItemCount = Math.Max(5, displayedItemCount) + 2;
             Height = (int)tableLayoutPanel1.RowStyles[0].Height
                 + (int)tableLayoutPanel3.RowStyles[1].Height
                 + (displayedItemCount * clipboardItemList.ItemHeight) - 14;
+            Region = Region.FromHrgn(SafeNativeMethods.CreateRoundRectRgn(0, 0, Width, Height, 31, 31));
+            var title = GetActiveWindowTitle();
+            if (!string.IsNullOrWhiteSpace(title))
+                LblPasteAppName.Text = "Pasting into: " + title;
 
             _itemContextMenu = new ContextMenuStrip();
             _itemContextMenu.Items.Add(_menuItemMarkAsPassword = new ToolStripMenuItem { Text = "Mark as password..." });
@@ -43,9 +49,14 @@ namespace SimpleClipboardManager
 
             _menuItemMarkAsPassword.Click += (s, e) =>
             {
-                _selectedItem?.MarkAsPassword("My password");
-                _manager.SaveClipboard();
-                clipboardItemList.Items[clipboardItemList.SelectedIndex] = _selectedItem;
+                var dialog = new MarkAsPasswordDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var displayText = string.IsNullOrWhiteSpace(dialog.DisplayText) ? "********" : dialog.DisplayText;
+                    _selectedItem?.MarkAsPassword(displayText);
+                    _manager.SaveClipboard();
+                    clipboardItemList.Items[clipboardItemList.SelectedIndex] = _selectedItem;
+                }
             };
             _menuItemClearMarkAsPassword.Click += (s, e) =>
             {
@@ -66,6 +77,18 @@ namespace SimpleClipboardManager
                 + "CTRL+Up/Down = Move selected element"
                 + Environment.NewLine
                 + "CTRL+Enter = Show context menu for selected element";
+        }
+
+        private string GetActiveWindowTitle()
+        {
+            const int nChars = 256;
+            var buf = new StringBuilder(nChars);
+            var handle = SafeNativeMethods.GetForegroundWindow();
+            if (SafeNativeMethods.GetWindowText(handle, buf, nChars) > 0)
+            {
+                return buf.ToString();
+            }
+            return null;
         }
 
         private void ClipboardItemList_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -228,6 +251,18 @@ namespace SimpleClipboardManager
             {
                 Clipboard.SetText(Text);
             }
+        }
+
+        private void BtnSettings_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnClear_Click(object sender, EventArgs e)
+        {
+            _clipboardItems.Clear();
+            clipboardItemList.Items.Clear();
+            _manager.SaveClipboard();
         }
     }
 }

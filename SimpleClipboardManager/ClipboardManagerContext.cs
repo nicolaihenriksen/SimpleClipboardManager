@@ -1,4 +1,5 @@
-﻿using SimpleClipboardManager.Properties;
+﻿using SimpleClipboardManager.Dialogs;
+using SimpleClipboardManager.Properties;
 using System;
 using System.Windows.Forms;
 
@@ -17,10 +18,23 @@ namespace SimpleClipboardManager
             {
                 Icon = Resources.AppIcon,
                 ContextMenu = new ContextMenu(new MenuItem[] {
+                    new MenuItem("Settings", ShowSettings),
                     new MenuItem("Exit", Exit),
                 }),
                 Visible = true
             };
+        }
+
+        private void ShowSettings(object sender, EventArgs e)
+        {
+            var dialog = new SettingsDialog(_manager.Settings)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _manager.SaveSettings();
+            }
         }
 
         void Exit(object sender, EventArgs e)

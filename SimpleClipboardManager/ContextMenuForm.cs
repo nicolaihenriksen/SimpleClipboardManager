@@ -1,4 +1,5 @@
 ﻿using SimpleClipboardManager.Dialogs;
+using SimpleClipboardManager.Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,15 +14,17 @@ namespace SimpleClipboardManager
         private ClipboardManager _manager;
         private readonly ContextMenuStrip _itemContextMenu;
         private List<ClipboardItem> _clipboardItems;
+        private SettingsModel _settings;
         private ClipboardItem _selectedItem;
         private ToolStripMenuItem _menuItemMarkAsPassword;
         private ToolStripMenuItem _menuItemClearMarkAsPassword;
         private bool _previouslyActivated;
 
-        public ContextMenuForm(ClipboardManager manager, List<ClipboardItem> items)
+        public ContextMenuForm(ClipboardManager manager, List<ClipboardItem> items, SettingsModel settings)
         {
             _manager = manager;
             _clipboardItems = items;
+            _settings = settings;
             InitializeComponent();
             PopulateList();
             Activated += (s, a) =>
@@ -33,8 +36,8 @@ namespace SimpleClipboardManager
             };
             FormBorderStyle = FormBorderStyle.None;
             Opacity = 0.9;
-            int displayedItemCount = Math.Min(7, items.Count);
-            displayedItemCount = Math.Max(5, displayedItemCount) + 2;
+            int displayedItemCount = Math.Min(_manager.Settings.MaxDisplayItems, items.Count);
+            displayedItemCount = Math.Max(_manager.Settings.MinDisplayItems, displayedItemCount) + 2;
             Height = (int)tableLayoutPanel1.RowStyles[0].Height
                 + (int)tableLayoutPanel3.RowStyles[1].Height
                 + (displayedItemCount * clipboardItemList.ItemHeight) - 14;
@@ -255,7 +258,11 @@ namespace SimpleClipboardManager
 
         private void BtnSettings_Click(object sender, EventArgs e)
         {
-
+            var dialog = new SettingsDialog(_manager.Settings);
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _manager.SaveSettings();
+            }
         }
 
         private void BtnClear_Click(object sender, EventArgs e)

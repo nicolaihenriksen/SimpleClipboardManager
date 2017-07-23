@@ -143,48 +143,55 @@
             this.tableLayoutPanel2.Controls.Add(this.BtnSettings, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.LblPasteAppName, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 1);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(803, 26);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(803, 25);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // BtnClose
             // 
-            this.BtnClose.Image = ((System.Drawing.Image)(resources.GetObject("BtnClose.Image")));
-            this.BtnClose.Location = new System.Drawing.Point(767, 0);
-            this.BtnClose.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.BtnClose.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.BtnClose.Image = global::SimpleClipboardManager.Properties.Resources.LightTheme_Close;
+            this.BtnClose.Location = new System.Drawing.Point(768, 2);
+            this.BtnClose.Margin = new System.Windows.Forms.Padding(0, 0, 15, 0);
             this.BtnClose.Name = "BtnClose";
-            this.BtnClose.Size = new System.Drawing.Size(26, 26);
+            this.BtnClose.Size = new System.Drawing.Size(20, 20);
+            this.BtnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.BtnClose.TabIndex = 0;
             this.BtnClose.TabStop = false;
             this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
+            this.BtnClose.MouseHover += new System.EventHandler(this.TitleButton_Hover);
             // 
             // BtnClear
             // 
             this.BtnClear.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.BtnClear.Image = global::SimpleClipboardManager.Properties.Resources.Clear;
-            this.BtnClear.Location = new System.Drawing.Point(679, 0);
+            this.BtnClear.Image = global::SimpleClipboardManager.Properties.Resources.LightTheme_Clear;
+            this.BtnClear.Location = new System.Drawing.Point(722, 2);
             this.BtnClear.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.BtnClear.Name = "BtnClear";
-            this.BtnClear.Size = new System.Drawing.Size(56, 26);
+            this.BtnClear.Size = new System.Drawing.Size(20, 20);
+            this.BtnClear.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.BtnClear.TabIndex = 2;
             this.BtnClear.TabStop = false;
             this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            this.BtnClear.MouseHover += new System.EventHandler(this.TitleButton_Hover);
             // 
             // BtnSettings
             // 
             this.BtnSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.BtnSettings.Image = ((System.Drawing.Image)(resources.GetObject("BtnSettings.Image")));
-            this.BtnSettings.Location = new System.Drawing.Point(738, 0);
+            this.BtnSettings.Image = global::SimpleClipboardManager.Properties.Resources.LightTheme_Settings;
+            this.BtnSettings.Location = new System.Drawing.Point(745, 2);
             this.BtnSettings.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
             this.BtnSettings.Name = "BtnSettings";
-            this.BtnSettings.Size = new System.Drawing.Size(26, 26);
+            this.BtnSettings.Size = new System.Drawing.Size(20, 20);
+            this.BtnSettings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.BtnSettings.TabIndex = 1;
             this.BtnSettings.TabStop = false;
             this.BtnSettings.Click += new System.EventHandler(this.BtnSettings_Click);
+            this.BtnSettings.MouseHover += new System.EventHandler(this.TitleButton_Hover);
             // 
             // LblPasteAppName
             // 
@@ -194,7 +201,7 @@
             this.LblPasteAppName.Location = new System.Drawing.Point(13, 0);
             this.LblPasteAppName.Margin = new System.Windows.Forms.Padding(13, 0, 3, 0);
             this.LblPasteAppName.Name = "LblPasteAppName";
-            this.LblPasteAppName.Size = new System.Drawing.Size(663, 26);
+            this.LblPasteAppName.Size = new System.Drawing.Size(706, 25);
             this.LblPasteAppName.TabIndex = 3;
             this.LblPasteAppName.Text = "<app name>";
             this.LblPasteAppName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

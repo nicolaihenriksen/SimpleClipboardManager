@@ -125,5 +125,14 @@
   <ItemGroup>
     <None Include="Resources\Clear.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LightTheme_Clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LightTheme_Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LightTheme_Settings.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

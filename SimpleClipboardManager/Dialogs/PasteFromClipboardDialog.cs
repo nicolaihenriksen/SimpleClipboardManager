@@ -74,6 +74,10 @@ namespace SimpleClipboardManager.Dialogs
             KeyPreview = true;
             KeyDown += ContextMenuForm_KeyDown;
 
+            BtnClose.Tag = "Close";
+            BtnSettings.Tag = "Show settings";
+            BtnClear.Tag = "Clear list";
+
             LblHints.Text = "Enter = Paste selected element"
                 + Environment.NewLine
                 + "Delete = Remove selected element"
@@ -89,6 +93,9 @@ namespace SimpleClipboardManager.Dialogs
             ForeColor = ThemeResources.GetTitleForeColor(theme);
             ContentPanel.BackgroundColor = ThemeResources.GetContentBackColor(theme);
             ContentPanel.ForeColor = ThemeResources.GetContentForeColor(theme);
+            BtnClose.Image = ThemeResources.GetCloseButtonIcon(theme);
+            BtnSettings.Image = ThemeResources.GetSettingsButtonIcon(theme);
+            BtnClear.Image = ThemeResources.GetClearButtonIcon(theme);
         }
 
         private string GetActiveWindowTitle()
@@ -280,6 +287,14 @@ namespace SimpleClipboardManager.Dialogs
             _clipboardItems.Clear();
             clipboardItemList.Items.Clear();
             _manager.SaveClipboard();
+        }
+
+        private void TitleButton_Hover(object sender, EventArgs e)
+        {
+            ToolTip tt = new ToolTip();
+            var ctrl = sender as Control;
+            if (ctrl != null)
+                tt.SetToolTip(ctrl, ctrl.Tag?.ToString());
         }
     }
 }

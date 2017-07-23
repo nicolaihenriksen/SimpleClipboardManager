@@ -30,9 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsDialog));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.BtnOk = new System.Windows.Forms.Button();
-            this.BtnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ComboMaxDisplayItems = new System.Windows.Forms.ComboBox();
@@ -44,6 +41,8 @@
             this.RadioHotKeyControlInsert = new System.Windows.Forms.RadioButton();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.CheckStartOnBoot = new System.Windows.Forms.CheckBox();
+            this.CheckStorage = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -51,76 +50,45 @@
             this.RadioThemeGreen = new System.Windows.Forms.RadioButton();
             this.RadioThemeDark = new System.Windows.Forms.RadioButton();
             this.RadioThemeLight = new System.Windows.Forms.RadioButton();
-            this.CheckStorage = new System.Windows.Forms.CheckBox();
-            this.CheckStartOnBoot = new System.Windows.Forms.CheckBox();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.BtnOk = new System.Windows.Forms.Button();
+            this.BtnCancel = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.TrackOpacity = new System.Windows.Forms.TrackBar();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TrackOpacity)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.groupBox4, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.groupBox5, 0, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(5, 5);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 5;
+            this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 96F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 123F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 16F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(452, 418);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 86F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 11F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(452, 508);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.tableLayoutPanel2.AutoSize = true;
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.Controls.Add(this.BtnOk, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.BtnCancel, 2, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(140, 383);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(172, 29);
-            this.tableLayoutPanel2.TabIndex = 4;
-            // 
-            // BtnOk
-            // 
-            this.BtnOk.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.BtnOk.Location = new System.Drawing.Point(3, 3);
-            this.BtnOk.Name = "BtnOk";
-            this.BtnOk.Size = new System.Drawing.Size(75, 23);
-            this.BtnOk.TabIndex = 0;
-            this.BtnOk.Text = "OK";
-            this.BtnOk.UseVisualStyleBackColor = true;
-            this.BtnOk.Click += new System.EventHandler(this.BtnOk_Click);
-            // 
-            // BtnCancel
-            // 
-            this.BtnCancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BtnCancel.Location = new System.Drawing.Point(94, 3);
-            this.BtnCancel.Name = "BtnCancel";
-            this.BtnCancel.Size = new System.Drawing.Size(75, 23);
-            this.BtnCancel.TabIndex = 1;
-            this.BtnCancel.Text = "Cancel";
-            this.BtnCancel.UseVisualStyleBackColor = true;
-            this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // groupBox1
             // 
@@ -336,6 +304,26 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Storage && Startup";
             // 
+            // CheckStartOnBoot
+            // 
+            this.CheckStartOnBoot.AutoSize = true;
+            this.CheckStartOnBoot.Location = new System.Drawing.Point(13, 48);
+            this.CheckStartOnBoot.Name = "CheckStartOnBoot";
+            this.CheckStartOnBoot.Size = new System.Drawing.Size(268, 21);
+            this.CheckStartOnBoot.TabIndex = 13;
+            this.CheckStartOnBoot.Text = "Start application when Windows starts";
+            this.CheckStartOnBoot.UseVisualStyleBackColor = true;
+            // 
+            // CheckStorage
+            // 
+            this.CheckStorage.AutoSize = true;
+            this.CheckStorage.Location = new System.Drawing.Point(13, 21);
+            this.CheckStorage.Name = "CheckStorage";
+            this.CheckStorage.Size = new System.Drawing.Size(423, 21);
+            this.CheckStorage.TabIndex = 12;
+            this.CheckStorage.Text = "Store copied items in a file in the user-scoped isolated storage";
+            this.CheckStorage.UseVisualStyleBackColor = true;
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -413,25 +401,88 @@
             this.RadioThemeLight.Text = "Light";
             this.RadioThemeLight.UseVisualStyleBackColor = true;
             // 
-            // CheckStorage
+            // tableLayoutPanel2
             // 
-            this.CheckStorage.AutoSize = true;
-            this.CheckStorage.Location = new System.Drawing.Point(13, 21);
-            this.CheckStorage.Name = "CheckStorage";
-            this.CheckStorage.Size = new System.Drawing.Size(423, 21);
-            this.CheckStorage.TabIndex = 12;
-            this.CheckStorage.Text = "Store copied items in a file in the user-scoped isolated storage";
-            this.CheckStorage.UseVisualStyleBackColor = true;
+            this.tableLayoutPanel2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.tableLayoutPanel2.AutoSize = true;
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.BtnOk, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.BtnCancel, 2, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(140, 471);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(172, 29);
+            this.tableLayoutPanel2.TabIndex = 4;
             // 
-            // CheckStartOnBoot
+            // BtnOk
             // 
-            this.CheckStartOnBoot.AutoSize = true;
-            this.CheckStartOnBoot.Location = new System.Drawing.Point(13, 48);
-            this.CheckStartOnBoot.Name = "CheckStartOnBoot";
-            this.CheckStartOnBoot.Size = new System.Drawing.Size(268, 21);
-            this.CheckStartOnBoot.TabIndex = 13;
-            this.CheckStartOnBoot.Text = "Start application when Windows starts";
-            this.CheckStartOnBoot.UseVisualStyleBackColor = true;
+            this.BtnOk.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.BtnOk.Location = new System.Drawing.Point(3, 3);
+            this.BtnOk.Name = "BtnOk";
+            this.BtnOk.Size = new System.Drawing.Size(75, 23);
+            this.BtnOk.TabIndex = 0;
+            this.BtnOk.Text = "OK";
+            this.BtnOk.UseVisualStyleBackColor = true;
+            this.BtnOk.Click += new System.EventHandler(this.BtnOk_Click);
+            // 
+            // BtnCancel
+            // 
+            this.BtnCancel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.BtnCancel.Location = new System.Drawing.Point(94, 3);
+            this.BtnCancel.Name = "BtnCancel";
+            this.BtnCancel.Size = new System.Drawing.Size(75, 23);
+            this.BtnCancel.TabIndex = 1;
+            this.BtnCancel.Text = "Cancel";
+            this.BtnCancel.UseVisualStyleBackColor = true;
+            this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label8);
+            this.groupBox5.Controls.Add(this.label7);
+            this.groupBox5.Controls.Add(this.TrackOpacity);
+            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox5.Location = new System.Drawing.Point(3, 380);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(446, 80);
+            this.groupBox5.TabIndex = 9;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Opacity";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(403, 51);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 17);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "Max.";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(10, 54);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(34, 17);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Min.";
+            // 
+            // TrackOpacity
+            // 
+            this.TrackOpacity.LargeChange = 10;
+            this.TrackOpacity.Location = new System.Drawing.Point(6, 21);
+            this.TrackOpacity.Maximum = 100;
+            this.TrackOpacity.Minimum = 20;
+            this.TrackOpacity.Name = "TrackOpacity";
+            this.TrackOpacity.Size = new System.Drawing.Size(434, 56);
+            this.TrackOpacity.TabIndex = 6;
+            this.TrackOpacity.TickFrequency = 10;
+            this.TrackOpacity.Value = 50;
             // 
             // SettingsDialog
             // 
@@ -439,7 +490,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.BtnCancel;
-            this.ClientSize = new System.Drawing.Size(462, 428);
+            this.ClientSize = new System.Drawing.Size(462, 518);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -451,7 +502,6 @@
             this.Text = "Settings";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -460,6 +510,10 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TrackOpacity)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -490,5 +544,9 @@
         private System.Windows.Forms.RadioButton RadioThemeLight;
         private System.Windows.Forms.CheckBox CheckStartOnBoot;
         private System.Windows.Forms.CheckBox CheckStorage;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TrackBar TrackOpacity;
     }
 }

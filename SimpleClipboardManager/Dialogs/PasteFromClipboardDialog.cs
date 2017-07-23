@@ -35,8 +35,8 @@ namespace SimpleClipboardManager.Dialogs
                 _previouslyActivated = true;
             };
             FormBorderStyle = FormBorderStyle.None;
-            Opacity = 0.9;
-            UpdateTheme(_manager.Settings.Theme);
+            //Opacity = 0.9;
+            UpdateTheme(_manager.Settings.Theme, _manager.Settings.Opacity);
             int displayedItemCount = Math.Min(_manager.Settings.MaxDisplayItems, items.Count);
             displayedItemCount = Math.Max(_manager.Settings.MinDisplayItems, displayedItemCount) + 2;
             Height = (int)tableLayoutPanel1.RowStyles[0].Height                 // Title header
@@ -74,7 +74,7 @@ namespace SimpleClipboardManager.Dialogs
             KeyPreview = true;
             KeyDown += ContextMenuForm_KeyDown;
 
-            BtnClose.Tag = "Close";
+            BtnClose.Tag = "Hide";
             BtnSettings.Tag = "Show settings";
             BtnClear.Tag = "Clear list";
 
@@ -87,7 +87,7 @@ namespace SimpleClipboardManager.Dialogs
                 + "CTRL+Enter = Show context menu for selected element";
         }
 
-        public void UpdateTheme(Theme theme)
+        public void UpdateTheme(Theme theme, double opacity)
         {
             BackColor = ThemeResources.GetTitleBackColor(theme);
             ForeColor = ThemeResources.GetTitleForeColor(theme);
@@ -96,6 +96,7 @@ namespace SimpleClipboardManager.Dialogs
             BtnClose.Image = ThemeResources.GetCloseButtonIcon(theme);
             BtnSettings.Image = ThemeResources.GetSettingsButtonIcon(theme);
             BtnClear.Image = ThemeResources.GetClearButtonIcon(theme);
+            Opacity = opacity;
         }
 
         private string GetActiveWindowTitle()
@@ -279,7 +280,7 @@ namespace SimpleClipboardManager.Dialogs
             {
                 _manager.SaveSettings();
             }
-            UpdateTheme(_manager.Settings.Theme);
+            UpdateTheme(_manager.Settings.Theme, _manager.Settings.Opacity);
         }
 
         private void BtnClear_Click(object sender, EventArgs e)

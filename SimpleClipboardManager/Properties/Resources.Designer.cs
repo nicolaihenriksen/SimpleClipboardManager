@@ -73,9 +73,9 @@ namespace SimpleClipboardManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Clear {
+        internal static System.Drawing.Bitmap BlueTheme_Clear {
             get {
-                object obj = ResourceManager.GetObject("Clear", resourceCulture);
+                object obj = ResourceManager.GetObject("BlueTheme_Clear", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,79 @@ namespace SimpleClipboardManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Close {
+        internal static System.Drawing.Bitmap BlueTheme_Close {
             get {
-                object obj = ResourceManager.GetObject("Close", resourceCulture);
+                object obj = ResourceManager.GetObject("BlueTheme_Close", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap BlueTheme_Settings {
+            get {
+                object obj = ResourceManager.GetObject("BlueTheme_Settings", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DarkTheme_Clear {
+            get {
+                object obj = ResourceManager.GetObject("DarkTheme_Clear", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DarkTheme_Close {
+            get {
+                object obj = ResourceManager.GetObject("DarkTheme_Close", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DarkTheme_Settings {
+            get {
+                object obj = ResourceManager.GetObject("DarkTheme_Settings", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GreenTheme_Clear {
+            get {
+                object obj = ResourceManager.GetObject("GreenTheme_Clear", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GreenTheme_Close {
+            get {
+                object obj = ResourceManager.GetObject("GreenTheme_Close", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GreenTheme_Settings {
+            get {
+                object obj = ResourceManager.GetObject("GreenTheme_Settings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -116,16 +186,6 @@ namespace SimpleClipboardManager.Properties {
         internal static System.Drawing.Bitmap LightTheme_Settings {
             get {
                 object obj = ResourceManager.GetObject("LightTheme_Settings", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Settings {
-            get {
-                object obj = ResourceManager.GetObject("Settings", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -117,15 +117,6 @@
     <None Include="Resources\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Close.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Settings.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Clear.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\LightTheme_Clear.png" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +124,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\LightTheme_Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DarkTheme_Clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DarkTheme_Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DarkTheme_Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTheme_Clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTheme_Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenTheme_Settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlueTheme_Clear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlueTheme_Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlueTheme_Settings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

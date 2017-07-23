@@ -15,6 +15,13 @@ namespace SimpleClipboardManager.Dialogs
             _pasteFromClipboardDialog = pasteFromClipboardDialog;
             _model = model;
             PopulateViewFromModel();
+
+            // Wire up dynamic content (i.e. properties that modify the visual appearance)
+            RadioThemeLight.CheckedChanged += DynamicContentChanged;
+            RadioThemeDark.CheckedChanged += DynamicContentChanged;
+            RadioThemeGreen.CheckedChanged += DynamicContentChanged;
+            RadioThemeBlue.CheckedChanged += DynamicContentChanged;
+            TrackOpacity.ValueChanged += DynamicContentChanged;
         }
 
         private void PopulateViewFromModel()
@@ -29,17 +36,12 @@ namespace SimpleClipboardManager.Dialogs
             RadioThemeDark.Checked = _model.Theme == Theme.Dark;
             RadioThemeGreen.Checked = _model.Theme == Theme.Green;
             RadioThemeBlue.Checked = _model.Theme == Theme.Blue;
-
-            RadioThemeLight.CheckedChanged += RadioTheme_CheckedChanged;
-            RadioThemeDark.CheckedChanged += RadioTheme_CheckedChanged;
-            RadioThemeGreen.CheckedChanged += RadioTheme_CheckedChanged;
-            RadioThemeBlue.CheckedChanged += RadioTheme_CheckedChanged;
-            
+            TrackOpacity.Value = (int)(_model.Opacity * 100);            
         }
 
-        private void RadioTheme_CheckedChanged(object sender, EventArgs e)
+        private void DynamicContentChanged(object sender, EventArgs e)
         {
-            _pasteFromClipboardDialog?.UpdateTheme(GetTheme());
+            _pasteFromClipboardDialog?.UpdateTheme(GetTheme(), GetOpacity());
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
@@ -61,6 +63,7 @@ namespace SimpleClipboardManager.Dialogs
             _model.HotKey = RadioHotKeyControlInsert.Checked ? HotKey.ControlInsert : HotKey.Insert;
             _model.StorageEnabled = CheckStorage.Checked;
             _model.StartOnBoot = CheckStartOnBoot.Checked;
+            _model.Opacity = GetOpacity();
             _model.Theme = GetTheme();
         }
 
@@ -73,6 +76,11 @@ namespace SimpleClipboardManager.Dialogs
             if (RadioThemeGreen.Checked)
                 return Theme.Green;
             return Theme.Blue;
+        }
+
+        private double GetOpacity()
+        {
+            return (double)TrackOpacity.Value / 100;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace SimpleClipboardManager
                 case Theme.Green:
                     return Color.MediumSeaGreen;
             }
-            return Color.MediumBlue;
+            return Color.FromArgb(74, 121, 191);
         }
 
         public static Color GetTitleForeColor(Theme theme)
@@ -57,17 +57,44 @@ namespace SimpleClipboardManager
 
         public static Bitmap GetCloseButtonIcon(Theme theme)
         {
-            return Resources.LightTheme_Close;
+            switch (theme)
+            {
+                case Theme.Light:
+                    return Resources.LightTheme_Close;
+                case Theme.Dark:
+                    return Resources.DarkTheme_Close;
+                case Theme.Green:
+                    return Resources.GreenTheme_Close;
+            }
+            return Resources.BlueTheme_Close;
         }
 
         public static Bitmap GetSettingsButtonIcon(Theme theme)
         {
-            return Resources.LightTheme_Settings;
+            switch (theme)
+            {
+                case Theme.Light:
+                    return Resources.LightTheme_Settings;
+                case Theme.Dark:
+                    return Resources.DarkTheme_Settings;
+                case Theme.Green:
+                    return Resources.GreenTheme_Settings;
+            }
+            return Resources.BlueTheme_Settings;
         }
 
         public static Bitmap GetClearButtonIcon(Theme theme)
         {
-            return Resources.LightTheme_Clear;
+            switch (theme)
+            {
+                case Theme.Light:
+                    return Resources.LightTheme_Clear;
+                case Theme.Dark:
+                    return Resources.DarkTheme_Clear;
+                case Theme.Green:
+                    return Resources.GreenTheme_Clear;
+            }
+            return Resources.BlueTheme_Clear;
         }
 
     }

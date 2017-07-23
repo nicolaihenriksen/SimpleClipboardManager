@@ -36,5 +36,8 @@ namespace SimpleClipboardManager.Model
 
         [DataMember]
         public Theme Theme { get; set; } = Theme.Green;
+
+        [DataMember]
+        public double Opacity { get; set; } = 1;
     }
 }

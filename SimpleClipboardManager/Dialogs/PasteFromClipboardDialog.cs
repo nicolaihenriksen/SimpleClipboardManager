@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace SimpleClipboardManager
+namespace SimpleClipboardManager.Dialogs
 {
-    public partial class ContextMenuForm : Form
+    public partial class PasteFromClipboardDialog : Form
     {
         private ClipboardManager _manager;
         private readonly ContextMenuStrip _itemContextMenu;
@@ -20,7 +20,7 @@ namespace SimpleClipboardManager
         private ToolStripMenuItem _menuItemClearMarkAsPassword;
         private bool _previouslyActivated;
 
-        public ContextMenuForm(ClipboardManager manager, List<ClipboardItem> items, SettingsModel settings)
+        public PasteFromClipboardDialog(ClipboardManager manager, List<ClipboardItem> items, SettingsModel settings)
         {
             _manager = manager;
             _clipboardItems = items;
@@ -36,11 +36,12 @@ namespace SimpleClipboardManager
             };
             FormBorderStyle = FormBorderStyle.None;
             Opacity = 0.9;
+            UpdateTheme(_manager.Settings.Theme);
             int displayedItemCount = Math.Min(_manager.Settings.MaxDisplayItems, items.Count);
             displayedItemCount = Math.Max(_manager.Settings.MinDisplayItems, displayedItemCount) + 2;
-            Height = (int)tableLayoutPanel1.RowStyles[0].Height
-                + (int)tableLayoutPanel3.RowStyles[1].Height
-                + (displayedItemCount * clipboardItemList.ItemHeight) - 14;
+            Height = (int)tableLayoutPanel1.RowStyles[0].Height                 // Title header
+                + (int)tableLayoutPanel3.RowStyles[1].Height                    // Hint pane
+                + (displayedItemCount * clipboardItemList.ItemHeight) - 14;     // Item list
             Region = Region.FromHrgn(SafeNativeMethods.CreateRoundRectRgn(0, 0, Width, Height, 31, 31));
             var title = GetActiveWindowTitle();
             if (!string.IsNullOrWhiteSpace(title))
@@ -80,6 +81,14 @@ namespace SimpleClipboardManager
                 + "CTRL+Up/Down = Move selected element"
                 + Environment.NewLine
                 + "CTRL+Enter = Show context menu for selected element";
+        }
+
+        public void UpdateTheme(Theme theme)
+        {
+            BackColor = ThemeResources.GetTitleBackColor(theme);
+            ForeColor = ThemeResources.GetTitleForeColor(theme);
+            ContentPanel.BackgroundColor = ThemeResources.GetContentBackColor(theme);
+            ContentPanel.ForeColor = ThemeResources.GetContentForeColor(theme);
         }
 
         private string GetActiveWindowTitle()
@@ -258,11 +267,12 @@ namespace SimpleClipboardManager
 
         private void BtnSettings_Click(object sender, EventArgs e)
         {
-            var dialog = new SettingsDialog(_manager.Settings);
+            var dialog = new SettingsDialog(this, _manager.Settings);
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 _manager.SaveSettings();
             }
+            UpdateTheme(_manager.Settings.Theme);
         }
 
         private void BtnClear_Click(object sender, EventArgs e)

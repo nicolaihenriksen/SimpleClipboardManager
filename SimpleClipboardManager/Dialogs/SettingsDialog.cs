@@ -6,11 +6,13 @@ namespace SimpleClipboardManager.Dialogs
 {
     public partial class SettingsDialog : Form
     {
+        private PasteFromClipboardDialog _pasteFromClipboardDialog;
         private SettingsModel _model;
 
-        public SettingsDialog(SettingsModel model)
+        public SettingsDialog(PasteFromClipboardDialog pasteFromClipboardDialog, SettingsModel model)
         {
             InitializeComponent();
+            _pasteFromClipboardDialog = pasteFromClipboardDialog;
             _model = model;
             PopulateViewFromModel();
         }
@@ -27,6 +29,17 @@ namespace SimpleClipboardManager.Dialogs
             RadioThemeDark.Checked = _model.Theme == Theme.Dark;
             RadioThemeGreen.Checked = _model.Theme == Theme.Green;
             RadioThemeBlue.Checked = _model.Theme == Theme.Blue;
+
+            RadioThemeLight.CheckedChanged += RadioTheme_CheckedChanged;
+            RadioThemeDark.CheckedChanged += RadioTheme_CheckedChanged;
+            RadioThemeGreen.CheckedChanged += RadioTheme_CheckedChanged;
+            RadioThemeBlue.CheckedChanged += RadioTheme_CheckedChanged;
+            
+        }
+
+        private void RadioTheme_CheckedChanged(object sender, EventArgs e)
+        {
+            _pasteFromClipboardDialog?.UpdateTheme(GetTheme());
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)

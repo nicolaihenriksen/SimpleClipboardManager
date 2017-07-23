@@ -53,11 +53,11 @@
     <Compile Include="ClipboardManager.cs" />
     <Compile Include="ClipboardManagerContext.cs" />
     <Compile Include="ClipboardNotification.cs" />
-    <Compile Include="ContextMenuForm.cs">
+    <Compile Include="Dialogs\PasteFromClipboardDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ContextMenuForm.Designer.cs">
-      <DependentUpon>ContextMenuForm.cs</DependentUpon>
+    <Compile Include="Dialogs\PasteFromClipboardDialog.Designer.cs">
+      <DependentUpon>PasteFromClipboardDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\MarkAsPasswordDialog.cs">
       <SubType>Form</SubType>
@@ -85,8 +85,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SafeNativeMethods.cs" />
-    <EmbeddedResource Include="ContextMenuForm.resx">
-      <DependentUpon>ContextMenuForm.cs</DependentUpon>
+    <Compile Include="ThemeResources.cs" />
+    <EmbeddedResource Include="Dialogs\PasteFromClipboardDialog.resx">
+      <DependentUpon>PasteFromClipboardDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\MarkAsPasswordDialog.resx">
       <DependentUpon>MarkAsPasswordDialog.cs</DependentUpon>

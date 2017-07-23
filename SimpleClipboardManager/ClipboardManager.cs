@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using SimpleClipboardManager.Dialogs;
 using SimpleClipboardManager.Model;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +20,7 @@ namespace SimpleClipboardManager
         private const string SettingsFileName = "settings.xml";
         private List<ClipboardItem> _clipboardItems = new List<ClipboardItem>();
         public SettingsModel Settings { get; private set; }
-        private ContextMenuForm _contextMenuForm;
+        private PasteFromClipboardDialog _pasteFromClipboardDialog;
 
         public ClipboardManager()
         {
@@ -37,14 +38,14 @@ namespace SimpleClipboardManager
                 || ((e.Modifiers & KeyModifiers.NoRepeat) == KeyModifiers.NoRepeat && Settings.HotKey == HotKey.ControlInsert))
                 return;
 
-            if (_contextMenuForm?.Visible == true)
+            if (_pasteFromClipboardDialog?.Visible == true)
             {
-                _contextMenuForm.BringInFocus();
+                _pasteFromClipboardDialog.BringInFocus();
                 return;
             }
-            _contextMenuForm = new ContextMenuForm(this, _clipboardItems, Settings);
-            _contextMenuForm.FormClosed += (s, e1) => _contextMenuForm = null;
-            _contextMenuForm.ShowDialog();
+            _pasteFromClipboardDialog = new PasteFromClipboardDialog(this, _clipboardItems, Settings);
+            _pasteFromClipboardDialog.FormClosed += (s, e1) => _pasteFromClipboardDialog = null;
+            _pasteFromClipboardDialog.ShowDialog();
         }
 
         private void ClipboardNotification_ClipboardUpdated(string text)

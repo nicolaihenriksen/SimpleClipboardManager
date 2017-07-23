@@ -1,6 +1,6 @@
-﻿namespace SimpleClipboardManager
+﻿namespace SimpleClipboardManager.Dialogs
 {
-    partial class ContextMenuForm
+    partial class PasteFromClipboardDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -28,26 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ContextMenuForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PasteFromClipboardDialog));
             this.clipboardItemList = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.roundCornerPanel1 = new SimpleClipboardManager.RoundCornerPanel();
+            this.ContentPanel = new SimpleClipboardManager.RoundCornerPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.LblHints = new System.Windows.Forms.Label();
-            this.BtnClose = new System.Windows.Forms.PictureBox();
-            this.BtnSettings = new System.Windows.Forms.PictureBox();
-            this.BtnClear = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.BtnClose = new System.Windows.Forms.PictureBox();
+            this.BtnClear = new System.Windows.Forms.PictureBox();
+            this.BtnSettings = new System.Windows.Forms.PictureBox();
             this.LblPasteAppName = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
-            this.roundCornerPanel1.SuspendLayout();
+            this.ContentPanel.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnClose)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnSettings)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnClear)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnClose)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnClear)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnSettings)).BeginInit();
             this.SuspendLayout();
             // 
             // clipboardItemList
@@ -65,7 +65,7 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.roundCornerPanel1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.ContentPanel, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -77,18 +77,19 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(803, 227);
             this.tableLayoutPanel1.TabIndex = 5;
             // 
-            // roundCornerPanel1
+            // ContentPanel
             // 
-            this.roundCornerPanel1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(121)))), ((int)(((byte)(104)))));
-            this.roundCornerPanel1.Controls.Add(this.tableLayoutPanel3);
-            this.roundCornerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.roundCornerPanel1.Location = new System.Drawing.Point(0, 26);
-            this.roundCornerPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.roundCornerPanel1.Name = "roundCornerPanel1";
-            this.roundCornerPanel1.Padding = new System.Windows.Forms.Padding(3);
-            this.roundCornerPanel1.Radius = 15;
-            this.roundCornerPanel1.Size = new System.Drawing.Size(803, 201);
-            this.roundCornerPanel1.TabIndex = 3;
+            this.ContentPanel.BackColor = System.Drawing.Color.Transparent;
+            this.ContentPanel.BackgroundColor = System.Drawing.Color.Black;
+            this.ContentPanel.Controls.Add(this.tableLayoutPanel3);
+            this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ContentPanel.Location = new System.Drawing.Point(0, 26);
+            this.ContentPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.ContentPanel.Name = "ContentPanel";
+            this.ContentPanel.Padding = new System.Windows.Forms.Padding(3);
+            this.ContentPanel.Radius = 15;
+            this.ContentPanel.Size = new System.Drawing.Size(803, 201);
+            this.ContentPanel.TabIndex = 3;
             // 
             // tableLayoutPanel3
             // 
@@ -123,48 +124,12 @@
             this.LblHints.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LblHints.AutoSize = true;
-            this.LblHints.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.LblHints.Location = new System.Drawing.Point(0, 0);
             this.LblHints.Margin = new System.Windows.Forms.Padding(0);
             this.LblHints.Name = "LblHints";
             this.LblHints.Size = new System.Drawing.Size(54, 17);
             this.LblHints.TabIndex = 0;
             this.LblHints.Text = "<hints>";
-            // 
-            // BtnClose
-            // 
-            this.BtnClose.Image = ((System.Drawing.Image)(resources.GetObject("BtnClose.Image")));
-            this.BtnClose.Location = new System.Drawing.Point(767, 0);
-            this.BtnClose.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.BtnClose.Name = "BtnClose";
-            this.BtnClose.Size = new System.Drawing.Size(26, 26);
-            this.BtnClose.TabIndex = 0;
-            this.BtnClose.TabStop = false;
-            this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
-            // 
-            // BtnSettings
-            // 
-            this.BtnSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.BtnSettings.Image = ((System.Drawing.Image)(resources.GetObject("BtnSettings.Image")));
-            this.BtnSettings.Location = new System.Drawing.Point(738, 0);
-            this.BtnSettings.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.BtnSettings.Name = "BtnSettings";
-            this.BtnSettings.Size = new System.Drawing.Size(26, 26);
-            this.BtnSettings.TabIndex = 1;
-            this.BtnSettings.TabStop = false;
-            this.BtnSettings.Click += new System.EventHandler(this.BtnSettings_Click);
-            // 
-            // BtnClear
-            // 
-            this.BtnClear.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.BtnClear.Image = global::SimpleClipboardManager.Properties.Resources.Clear;
-            this.BtnClear.Location = new System.Drawing.Point(679, 0);
-            this.BtnClear.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.BtnClear.Name = "BtnClear";
-            this.BtnClear.Size = new System.Drawing.Size(56, 26);
-            this.BtnClear.TabIndex = 2;
-            this.BtnClear.TabStop = false;
-            this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -186,12 +151,46 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(803, 26);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
+            // BtnClose
+            // 
+            this.BtnClose.Image = ((System.Drawing.Image)(resources.GetObject("BtnClose.Image")));
+            this.BtnClose.Location = new System.Drawing.Point(767, 0);
+            this.BtnClose.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.BtnClose.Name = "BtnClose";
+            this.BtnClose.Size = new System.Drawing.Size(26, 26);
+            this.BtnClose.TabIndex = 0;
+            this.BtnClose.TabStop = false;
+            this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
+            // 
+            // BtnClear
+            // 
+            this.BtnClear.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.BtnClear.Image = global::SimpleClipboardManager.Properties.Resources.Clear;
+            this.BtnClear.Location = new System.Drawing.Point(679, 0);
+            this.BtnClear.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.BtnClear.Name = "BtnClear";
+            this.BtnClear.Size = new System.Drawing.Size(56, 26);
+            this.BtnClear.TabIndex = 2;
+            this.BtnClear.TabStop = false;
+            this.BtnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            // 
+            // BtnSettings
+            // 
+            this.BtnSettings.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.BtnSettings.Image = ((System.Drawing.Image)(resources.GetObject("BtnSettings.Image")));
+            this.BtnSettings.Location = new System.Drawing.Point(738, 0);
+            this.BtnSettings.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.BtnSettings.Name = "BtnSettings";
+            this.BtnSettings.Size = new System.Drawing.Size(26, 26);
+            this.BtnSettings.TabIndex = 1;
+            this.BtnSettings.TabStop = false;
+            this.BtnSettings.Click += new System.EventHandler(this.BtnSettings_Click);
+            // 
             // LblPasteAppName
             // 
             this.LblPasteAppName.AutoSize = true;
             this.LblPasteAppName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LblPasteAppName.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblPasteAppName.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.LblPasteAppName.Location = new System.Drawing.Point(13, 0);
             this.LblPasteAppName.Margin = new System.Windows.Forms.Padding(13, 0, 3, 0);
             this.LblPasteAppName.Name = "LblPasteAppName";
@@ -200,7 +199,7 @@
             this.LblPasteAppName.Text = "<app name>";
             this.LblPasteAppName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // ContextMenuForm
+            // PasteFromClipboardDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -210,19 +209,19 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "ContextMenuForm";
+            this.Name = "PasteFromClipboardDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Simple Clipboard Manager";
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.roundCornerPanel1.ResumeLayout(false);
+            this.ContentPanel.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnClose)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnSettings)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.BtnClear)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnClose)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnClear)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BtnSettings)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -230,7 +229,7 @@
         #endregion
         private System.Windows.Forms.ListBox clipboardItemList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private RoundCornerPanel roundCornerPanel1;
+        private RoundCornerPanel ContentPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.PictureBox BtnClose;
         private System.Windows.Forms.PictureBox BtnSettings;

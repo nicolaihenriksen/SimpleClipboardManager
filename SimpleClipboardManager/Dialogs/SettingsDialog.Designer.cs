@@ -43,8 +43,8 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.CheckStartOnBoot = new System.Windows.Forms.CheckBox();
             this.CheckStorage = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.LblDisclaimerText = new System.Windows.Forms.Label();
+            this.LblDisclaimerHeader = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.RadioThemeBlue = new System.Windows.Forms.RadioButton();
             this.RadioThemeGreen = new System.Windows.Forms.RadioButton();
@@ -294,8 +294,8 @@
             // 
             this.groupBox3.Controls.Add(this.CheckStartOnBoot);
             this.groupBox3.Controls.Add(this.CheckStorage);
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.LblDisclaimerText);
+            this.groupBox3.Controls.Add(this.LblDisclaimerHeader);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(3, 199);
             this.groupBox3.Name = "groupBox3";
@@ -324,24 +324,24 @@
             this.CheckStorage.Text = "Store copied items in a file in the user-scoped isolated storage";
             this.CheckStorage.UseVisualStyleBackColor = true;
             // 
-            // label6
+            // LblDisclaimerText
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 89);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(428, 17);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Items are stored in a binary file without encryption. Use at own risk.";
+            this.LblDisclaimerText.AutoSize = true;
+            this.LblDisclaimerText.Location = new System.Drawing.Point(10, 89);
+            this.LblDisclaimerText.Name = "LblDisclaimerText";
+            this.LblDisclaimerText.Size = new System.Drawing.Size(428, 17);
+            this.LblDisclaimerText.TabIndex = 11;
+            this.LblDisclaimerText.Text = "Items are stored in a binary file without encryption. Use at own risk.";
             // 
-            // label5
+            // LblDisclaimerHeader
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(10, 72);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(83, 17);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Disclaimer";
+            this.LblDisclaimerHeader.AutoSize = true;
+            this.LblDisclaimerHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblDisclaimerHeader.Location = new System.Drawing.Point(10, 72);
+            this.LblDisclaimerHeader.Name = "LblDisclaimerHeader";
+            this.LblDisclaimerHeader.Size = new System.Drawing.Size(83, 17);
+            this.LblDisclaimerHeader.TabIndex = 8;
+            this.LblDisclaimerHeader.Text = "Disclaimer";
             // 
             // groupBox4
             // 
@@ -535,8 +535,8 @@
         private System.Windows.Forms.RadioButton RadioHotKeyControlInsert;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label LblDisclaimerText;
+        private System.Windows.Forms.Label LblDisclaimerHeader;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.RadioButton RadioThemeBlue;
         private System.Windows.Forms.RadioButton RadioThemeGreen;

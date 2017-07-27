@@ -80,7 +80,9 @@ namespace SimpleClipboardManager.Dialogs
                 + Environment.NewLine
                 + "CTRL+Up/Down = Move selected element"
                 + Environment.NewLine
-                + "CTRL+Enter = Show context menu for selected element";
+                + "CTRL+Enter = Show context menu for selected element"
+                + Environment.NewLine
+                + "CTRL+SHIFT+digit(1-9) = Paste the n'th element (only first 9)";
         }
 
         public void UpdateTheme(Theme theme, double opacity)
@@ -232,19 +234,8 @@ namespace SimpleClipboardManager.Dialogs
 
         private void Paste()
         {
-            ClipboardNotification.SuppressNextEvent();
             var text = (clipboardItemList.SelectedItem as ClipboardItem)?.Text;
-            if (!string.IsNullOrEmpty(text))
-            {
-                var paster = new Paster { Text = text };
-                Thread thread = new Thread(paster.DoPaste);
-                thread.SetApartmentState(ApartmentState.STA);
-                thread.Start();
-                thread.Join();
-                Hide();
-                SendKeys.Send("^v");
-            }
-            Close();
+            _manager.Paste(text, Hide);
         }
 
         private class Paster

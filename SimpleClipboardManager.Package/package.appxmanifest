@@ -25,6 +25,9 @@
       </uap:VisualElements>
       <Extensions>
         <desktop:Extension Category="windows.fullTrustProcess" Executable="win32\SimpleClipboardManager.exe" />
+        <desktop:Extension Category="windows.startupTask" Executable="win32\SimpleClipboardManager.exe" EntryPoint="Windows.FullTrustApplication">
+          <desktop:StartupTask TaskId="SimpleClipboardManagerStartupTask" Enabled="true" DisplayName="Simple Clipboard Manager" />
+        </desktop:Extension>
       </Extensions>
     </Application>
   </Applications>

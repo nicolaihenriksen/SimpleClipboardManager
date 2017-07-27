@@ -1,9 +1,7 @@
-﻿using SimpleClipboardManager.Dialogs;
-using SimpleClipboardManager.Model;
+﻿using SimpleClipboardManager.Model;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -20,7 +18,7 @@ namespace SimpleClipboardManager.Dialogs
         private ToolStripMenuItem _menuItemClearMarkAsPassword;
         private bool _previouslyActivated;
 
-        public PasteFromClipboardDialog(ClipboardManager manager, List<ClipboardItem> items, SettingsModel settings)
+        public PasteFromClipboardDialog(ClipboardManager manager, List<ClipboardItem> items, SettingsModel settings, string activeAppTitle)
         {
             _manager = manager;
             _clipboardItems = items;
@@ -43,9 +41,7 @@ namespace SimpleClipboardManager.Dialogs
                 + (int)tableLayoutPanel3.RowStyles[1].Height                    // Hint pane
                 + (displayedItemCount * clipboardItemList.ItemHeight) - 14;     // Item list
             Region = Region.FromHrgn(SafeNativeMethods.CreateRoundRectRgn(0, 0, Width, Height, 31, 31));
-            var title = GetActiveWindowTitle();
-            if (!string.IsNullOrWhiteSpace(title))
-                LblPasteAppName.Text = "Pasting into: " + title;
+            LblPasteAppName.Text = "Pasting into: " + activeAppTitle;
 
             _itemContextMenu = new ContextMenuStrip();
             _itemContextMenu.Items.Add(_menuItemMarkAsPassword = new ToolStripMenuItem { Text = "Mark as password..." });
@@ -84,7 +80,9 @@ namespace SimpleClipboardManager.Dialogs
                 + Environment.NewLine
                 + "CTRL+Up/Down = Move selected element"
                 + Environment.NewLine
-                + "CTRL+Enter = Show context menu for selected element";
+                + "CTRL+Enter = Show context menu for selected element"
+                + Environment.NewLine
+                + "CTRL+SHIFT+digit(1-9) = Paste the n'th element (only first 9)";
         }
 
         public void UpdateTheme(Theme theme, double opacity)
@@ -97,18 +95,6 @@ namespace SimpleClipboardManager.Dialogs
             BtnSettings.Image = ThemeResources.GetSettingsButtonIcon(theme);
             BtnClear.Image = ThemeResources.GetClearButtonIcon(theme);
             Opacity = opacity;
-        }
-
-        private string GetActiveWindowTitle()
-        {
-            const int nChars = 256;
-            var buf = new StringBuilder(nChars);
-            var handle = SafeNativeMethods.GetForegroundWindow();
-            if (SafeNativeMethods.GetWindowText(handle, buf, nChars) > 0)
-            {
-                return buf.ToString();
-            }
-            return null;
         }
 
         private void ClipboardItemList_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -248,19 +234,8 @@ namespace SimpleClipboardManager.Dialogs
 
         private void Paste()
         {
-            ClipboardNotification.SuppressNextEvent();
             var text = (clipboardItemList.SelectedItem as ClipboardItem)?.Text;
-            if (!string.IsNullOrEmpty(text))
-            {
-                var paster = new Paster { Text = text };
-                Thread thread = new Thread(paster.DoPaste);
-                thread.SetApartmentState(ApartmentState.STA);
-                thread.Start();
-                thread.Join();
-                Hide();
-                SendKeys.Send("^v");
-            }
-            Close();
+            _manager.Paste(text, Hide);
         }
 
         private class Paster

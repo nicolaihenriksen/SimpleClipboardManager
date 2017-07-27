@@ -8,6 +8,7 @@ namespace SimpleClipboardManager
     {
         public const int WM_CLIPBOARDUPDATE = 0x031D;
         public static IntPtr HWND_MESSAGE = new IntPtr(-3);
+        public const long APPMODEL_ERROR_NO_PACKAGE = 15700L;
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -38,5 +39,8 @@ namespace SimpleClipboardManager
 
         [DllImport("user32.dll")]
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int GetCurrentPackageFullName(ref int packageFullNameLength, StringBuilder packageFullName);
     }
 }

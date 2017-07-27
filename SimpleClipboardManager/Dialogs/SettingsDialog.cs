@@ -1,5 +1,6 @@
 ﻿using SimpleClipboardManager.Model;
 using System;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SimpleClipboardManager.Dialogs
@@ -22,6 +23,41 @@ namespace SimpleClipboardManager.Dialogs
             RadioThemeGreen.CheckedChanged += DynamicContentChanged;
             RadioThemeBlue.CheckedChanged += DynamicContentChanged;
             TrackOpacity.ValueChanged += DynamicContentChanged;
+
+            ModifyLayoutBasedOnAppType();
+        }
+
+        private void ModifyLayoutBasedOnAppType()
+        {
+            if (IsRunningAsUwp())
+            {
+                CheckStartOnBoot.Visible = false;
+                var removedPixels = 27;
+                LblDisclaimerHeader.Top -= removedPixels;
+                LblDisclaimerText.Top -= removedPixels;
+                tableLayoutPanel1.RowStyles[2].Height -= removedPixels;
+                Height -= removedPixels;
+            }
+        }
+
+        private bool IsRunningAsUwp()
+        {
+            if (!OsSupportsUwp())
+                return false;
+            int length = 0;
+            StringBuilder sb = new StringBuilder(0);
+            var result = SafeNativeMethods.GetCurrentPackageFullName(ref length, sb);
+            sb = new StringBuilder(length);
+            result = SafeNativeMethods.GetCurrentPackageFullName(ref length, sb);
+            return result != SafeNativeMethods.APPMODEL_ERROR_NO_PACKAGE;
+        }
+
+        private bool OsSupportsUwp()
+        {
+            var major = Environment.OSVersion.Version.Major;
+            var minor = Environment.OSVersion.Version.Minor;
+            double version = major + (double)minor / 10;
+            return version > 6.1;
         }
 
         private void PopulateViewFromModel()
@@ -62,7 +98,7 @@ namespace SimpleClipboardManager.Dialogs
             _model.MaxDisplayItems = Convert.ToInt32(ComboMaxDisplayItems.SelectedItem);
             _model.HotKey = RadioHotKeyControlInsert.Checked ? HotKey.ControlInsert : HotKey.Insert;
             _model.StorageEnabled = CheckStorage.Checked;
-            _model.StartOnBoot = CheckStartOnBoot.Checked;
+            _model.StartOnBoot = !IsRunningAsUwp() && CheckStartOnBoot.Checked;
             _model.Opacity = GetOpacity();
             _model.Theme = GetTheme();
         }

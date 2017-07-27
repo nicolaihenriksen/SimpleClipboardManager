@@ -5,7 +5,7 @@
   <Properties>
     <DisplayName>SimpleClipboardManager</DisplayName>
     <PublisherDisplayName>Nicolai Henriksen</PublisherDisplayName>
-    <Logo>images\Logo.png</Logo>
+    <Logo>images\Logo.150x150.scale-100.png</Logo>
   </Properties>
   <Resources>
     <Resource Language="en-us" />

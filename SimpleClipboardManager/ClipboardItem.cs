@@ -11,6 +11,8 @@ namespace SimpleClipboardManager
 
         public bool IsPassword { get; set; }
 
+        public int? Favorite { get; set; }
+
         public void MarkAsPassword(string displayText = null)
         {
             IsPassword = true;
@@ -26,9 +28,19 @@ namespace SimpleClipboardManager
             DisplayText = null;
         }
 
+        public void UnmarkAsFavorite()
+        {
+            Favorite = null;
+        }
+
         public override string ToString()
         {
-            return DisplayText ?? Text;
+            var text = DisplayText ?? Text;
+            if (Favorite.HasValue)
+            {
+                text = $"[F{Favorite.Value + 1}] " + text;
+            }
+            return text;
         }
     }
 }

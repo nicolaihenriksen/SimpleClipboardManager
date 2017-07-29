@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PasteFromClipboardDialog));
-            this.clipboardItemList = new System.Windows.Forms.ListBox();
+            this.ClipboardItemList = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.ContentPanel = new SimpleClipboardManager.RoundCornerPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -52,14 +52,14 @@
             // 
             // clipboardItemList
             // 
-            this.clipboardItemList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.clipboardItemList.FormattingEnabled = true;
-            this.clipboardItemList.ItemHeight = 16;
-            this.clipboardItemList.Location = new System.Drawing.Point(6, 6);
-            this.clipboardItemList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 0);
-            this.clipboardItemList.Name = "clipboardItemList";
-            this.clipboardItemList.Size = new System.Drawing.Size(785, 102);
-            this.clipboardItemList.TabIndex = 1;
+            this.ClipboardItemList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClipboardItemList.FormattingEnabled = true;
+            this.ClipboardItemList.ItemHeight = 16;
+            this.ClipboardItemList.Location = new System.Drawing.Point(6, 6);
+            this.ClipboardItemList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 0);
+            this.ClipboardItemList.Name = "clipboardItemList";
+            this.ClipboardItemList.Size = new System.Drawing.Size(785, 84);
+            this.ClipboardItemList.TabIndex = 1;
             // 
             // tableLayoutPanel1
             // 
@@ -96,7 +96,7 @@
             this.tableLayoutPanel3.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.clipboardItemList, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.ClipboardItemList, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.flowLayoutPanel2, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 3);
@@ -104,7 +104,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 87F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 105F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(797, 195);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
@@ -113,10 +113,10 @@
             this.flowLayoutPanel2.Controls.Add(this.LblHints);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(8, 108);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(8, 90);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(789, 87);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(789, 105);
             this.flowLayoutPanel2.TabIndex = 2;
             // 
             // LblHints
@@ -234,7 +234,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.ListBox clipboardItemList;
+        private System.Windows.Forms.ListBox ClipboardItemList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private RoundCornerPanel ContentPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;

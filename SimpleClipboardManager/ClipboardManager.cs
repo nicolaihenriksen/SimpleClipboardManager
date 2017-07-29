@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -21,15 +22,17 @@ namespace SimpleClipboardManager
 
         private const string ClipboardDataFileName = "clipboard.data";
         private const string SettingsFileName = "settings.xml";
-        private List<ClipboardItem> _clipboardItems = new List<ClipboardItem>();
+        public List<ClipboardItem> ClipboardItems { get; private set; } = new List<ClipboardItem>();
         public SettingsModel Settings { get; private set; }
         private PasteFromClipboardDialog _pasteFromClipboardDialog;
 
         public ClipboardManager()
         {
             ClipboardNotification.ClipboardUpdated += ClipboardNotification_ClipboardUpdated;
+            // Activation hotkeys
             HotKeyManager.RegisterHotKey(Keys.Insert, KeyModifiers.Control);
             HotKeyManager.RegisterHotKey(Keys.Insert, KeyModifiers.NoRepeat);
+            // Paste n'th item from clipboard hotkeys
             HotKeyManager.RegisterHotKey(Keys.D1, KeyModifiers.Control | KeyModifiers.Shift);
             HotKeyManager.RegisterHotKey(Keys.D2, KeyModifiers.Control | KeyModifiers.Shift);
             HotKeyManager.RegisterHotKey(Keys.D3, KeyModifiers.Control | KeyModifiers.Shift);
@@ -39,6 +42,19 @@ namespace SimpleClipboardManager
             HotKeyManager.RegisterHotKey(Keys.D7, KeyModifiers.Control | KeyModifiers.Shift);
             HotKeyManager.RegisterHotKey(Keys.D8, KeyModifiers.Control | KeyModifiers.Shift);
             HotKeyManager.RegisterHotKey(Keys.D9, KeyModifiers.Control | KeyModifiers.Shift);
+            // Paste favorites hotkeys
+            HotKeyManager.RegisterHotKey(Keys.F1, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F2, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F3, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F4, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F5, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F6, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F7, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F8, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F9, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F10, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F11, KeyModifiers.Control | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.F12, KeyModifiers.Control | KeyModifiers.Shift);
             HotKeyManager.HotKeyPressed += HotKeyManager_HotKeyPressed;
             LoadSettings();
             LoadClipboard();
@@ -53,13 +69,21 @@ namespace SimpleClipboardManager
             if (e.Modifiers != (KeyModifiers.Control | KeyModifiers.Shift))
                 return;
 
-            int index = (int)e.Key - 49;    // 49 is the ASCII equivalent for the digit 1
-            if (index < 0 && index > 8)
-                return;
-
-            // Paste the element at the index (if available)
-            if (_clipboardItems.Count > index)
-                Paste(_clipboardItems[index].Text, () => _pasteFromClipboardDialog?.Hide());
+            if (e.Key >= Keys.D1 && e.Key <= Keys.D9)
+            {
+                // Paste the n'th item from the clipboard
+                var index = (int)e.Key - 49;     // 49 is the ASCII equivalent for the digit 1
+                if (ClipboardItems.Count > index)
+                    Paste(ClipboardItems[index].Text, () => _pasteFromClipboardDialog?.Hide());
+            }
+            else if (e.Key >= Keys.F1 && e.Key <= Keys.F12)
+            {
+                // Paste the n'th item from favorites
+                var index = (int)e.Key - 112;    // 112 is the ASCII equivalent for the F1 key
+                var favorite = ClipboardItems.FirstOrDefault(ci => ci.Favorite == index);
+                if (favorite != null)
+                    Paste(favorite.Text, () => _pasteFromClipboardDialog?.Hide());
+            }
         }
 
         private void HandleActivationHotKey(KeyModifiers modifiers)
@@ -78,7 +102,7 @@ namespace SimpleClipboardManager
                 _pasteFromClipboardDialog.BringInFocus();
                 return;
             }
-            _pasteFromClipboardDialog = new PasteFromClipboardDialog(this, _clipboardItems, Settings, activeAppTitle);
+            _pasteFromClipboardDialog = new PasteFromClipboardDialog(this, activeAppTitle);
             _pasteFromClipboardDialog.FormClosed += (s, e1) => _pasteFromClipboardDialog = null;
             _pasteFromClipboardDialog.ShowDialog();
         }
@@ -117,13 +141,14 @@ namespace SimpleClipboardManager
 
             public void DoPaste()
             {
+                System.Diagnostics.Debug.WriteLine("Setting text on system clipboard: " + Text);
                 Clipboard.SetText(Text);
             }
         }
 
         private void ClipboardNotification_ClipboardUpdated(string text)
         {
-            _clipboardItems.Insert(0, new ClipboardItem { Text = text });
+            ClipboardItems.Insert(0, new ClipboardItem { Text = text });
             SaveClipboard();
         }
 
@@ -136,7 +161,7 @@ namespace SimpleClipboardManager
                     using (var fs = isoStore.OpenFile(ClipboardDataFileName, FileMode.Create))
                     {
                         var bf = new BinaryFormatter();
-                        bf.Serialize(fs, _clipboardItems);
+                        bf.Serialize(fs, ClipboardItems);
                         fs.Flush();
                     }
                 }
@@ -154,7 +179,7 @@ namespace SimpleClipboardManager
                     if (Settings.StorageEnabled)
                     {
                         var bf = new BinaryFormatter();
-                        _clipboardItems = (List<ClipboardItem>)bf.Deserialize(fs);
+                        ClipboardItems = (List<ClipboardItem>)bf.Deserialize(fs);
                     }
                     else
                     {

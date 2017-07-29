@@ -52,17 +52,26 @@
     <TargetPlatformMinVersion>10.0.10586.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>$(VersionNumberMajor).$(VersionNumberMinor)</MinimumVisualStudioVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>SimpleClipboardManager.Package_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>SimpleClipboardManager.Package_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>DFA0E2BD19C6DFBF792D63C3321E666BABD214D6</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="images\LargeTile.scale-100.png" />
+    <Content Include="images\LargeTile.scale-100.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\LargeTile.scale-125.png" />
     <Content Include="images\LargeTile.scale-150.png" />
     <Content Include="images\LargeTile.scale-200.png" />
     <Content Include="images\LargeTile.scale-400.png" />
+    <Content Include="images\Logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\Logo.150x150.scale-100.png" />
     <Content Include="images\Logo.150x150.scale-125.png" />
     <Content Include="images\Logo.150x150.scale-150.png" />
@@ -101,6 +110,8 @@
     <Content Include="index.html" />
     <Content Include="js\main.js" />
     <Content Include="css\default.css" />
+    <None Include="Package.StoreAssociation.xml" />
+    <None Include="SimpleClipboardManager.Package_StoreKey.pfx" />
     <Content Include="win32\SimpleClipboardManager.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

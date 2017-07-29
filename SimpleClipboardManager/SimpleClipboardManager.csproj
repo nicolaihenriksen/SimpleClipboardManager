@@ -53,6 +53,12 @@
     <Compile Include="ClipboardManager.cs" />
     <Compile Include="ClipboardManagerContext.cs" />
     <Compile Include="ClipboardNotification.cs" />
+    <Compile Include="Dialogs\MarkAsFavoriteDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\MarkAsFavoriteDialog.Designer.cs">
+      <DependentUpon>MarkAsFavoriteDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\PasteFromClipboardDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,9 @@
     </Compile>
     <Compile Include="SafeNativeMethods.cs" />
     <Compile Include="ThemeResources.cs" />
+    <EmbeddedResource Include="Dialogs\MarkAsFavoriteDialog.resx">
+      <DependentUpon>MarkAsFavoriteDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\PasteFromClipboardDialog.resx">
       <DependentUpon>PasteFromClipboardDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -160,9 +169,9 @@
     <PropertyGroup>
       <TargetUWP>..\SimpleClipboardManager.Package\win32\</TargetUWP>
     </PropertyGroup>
-     <ItemGroup>
-       <Win32Binaries Include="$(TargetDir)\*.exe" />
-     </ItemGroup>
+    <ItemGroup>
+      <Win32Binaries Include="$(TargetDir)\*.exe" />
+    </ItemGroup>
     <Copy SourceFiles="@(Win32Binaries)" DestinationFolder="$(TargetUWP)" />
   </Target>
 </Project>

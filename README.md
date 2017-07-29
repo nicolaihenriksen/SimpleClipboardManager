@@ -1,6 +1,6 @@
 # Simple Clipboard Manager
 
-Simple implementation of a clipboard manager which allows you to copy/paste multiple strings.
+Simple implementation of a clipboard manager which allows you more control over the strings you copy and paste. Selective strings can be marked as favorites and/or as passwords (see sections below).
 When activated by the selected hotkey, the following dialog is displayed:
 
 ![](https://github.com/nicolaihenriksen/SimpleClipboardManager/blob/master/Screenshots/Screenshot1.png?raw=true)
@@ -23,3 +23,14 @@ Here you have the option of simply masking the password (i.e. it will display 8 
 
 __***Disclaimer***__
 As indicated in the screenshot, password items simply have their visual representation modified to hide the actual password. The copied string still resides in memory and optionally on disk (see the *Settings* section). Use at your own risk!
+
+#### Mark as favorite
+The "*Mark as favorite...*" option, available via key combination or right-clicking on the item, will allow you to mark certain items as favorites for easier pasting (i.e. CTRL+SHIFT+F1-F12)
+
+![](https://github.com/nicolaihenriksen/SimpleClipboardManager/blob/master/Screenshots/Screenshot4.png?raw=true)
+
+Here you have the option of associating the selected item with a given favorite key (F1-F12). This can be used for quick pasting; see below.
+
+#### Quick pasting
+To quickly paste something from the Clipboard Manager, you can use CTRL+SHIFT+1-9 as a shortcut to paste the n'th (1 through 9) element in the list based on the display order.
+As the display order changes every time something is copied to the clipboard, it is probably desirable to use CTRL-SHIFT+F1-F12 which will paste the favorite item stored on the given favorite key (F1-F12).

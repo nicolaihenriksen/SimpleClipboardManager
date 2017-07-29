@@ -11,18 +11,17 @@ namespace SimpleClipboardManager.Dialogs
     {
         private ClipboardManager _manager;
         private readonly ContextMenuStrip _itemContextMenu;
-        private List<ClipboardItem> _clipboardItems;
-        private SettingsModel _settings;
         private ClipboardItem _selectedItem;
         private ToolStripMenuItem _menuItemMarkAsPassword;
         private ToolStripMenuItem _menuItemClearMarkAsPassword;
+        private ToolStripMenuItem _menuItemMarkAsFavorite;
+        private ToolStripMenuItem _menuItemClearMarkAsFavorite;
+        
         private bool _previouslyActivated;
 
-        public PasteFromClipboardDialog(ClipboardManager manager, List<ClipboardItem> items, SettingsModel settings, string activeAppTitle)
+        public PasteFromClipboardDialog(ClipboardManager manager, string activeAppTitle)
         {
             _manager = manager;
-            _clipboardItems = items;
-            _settings = settings;
             InitializeComponent();
             PopulateList();
             Activated += (s, a) =>
@@ -35,17 +34,19 @@ namespace SimpleClipboardManager.Dialogs
             FormBorderStyle = FormBorderStyle.None;
             //Opacity = 0.9;
             UpdateTheme(_manager.Settings.Theme, _manager.Settings.Opacity);
-            int displayedItemCount = Math.Min(_manager.Settings.MaxDisplayItems, items.Count);
+            int displayedItemCount = Math.Min(_manager.Settings.MaxDisplayItems, _manager.ClipboardItems.Count);
             displayedItemCount = Math.Max(_manager.Settings.MinDisplayItems, displayedItemCount) + 2;
             Height = (int)tableLayoutPanel1.RowStyles[0].Height                 // Title header
                 + (int)tableLayoutPanel3.RowStyles[1].Height                    // Hint pane
-                + (displayedItemCount * clipboardItemList.ItemHeight) - 14;     // Item list
+                + (displayedItemCount * ClipboardItemList.ItemHeight) - 14;     // Item list
             Region = Region.FromHrgn(SafeNativeMethods.CreateRoundRectRgn(0, 0, Width, Height, 31, 31));
             LblPasteAppName.Text = "Pasting into: " + activeAppTitle;
 
             _itemContextMenu = new ContextMenuStrip();
             _itemContextMenu.Items.Add(_menuItemMarkAsPassword = new ToolStripMenuItem { Text = "Mark as password..." });
             _itemContextMenu.Items.Add(_menuItemClearMarkAsPassword = new ToolStripMenuItem { Text = "Unmark as password" });
+            _itemContextMenu.Items.Add(_menuItemMarkAsFavorite = new ToolStripMenuItem { Text = "Mark as favorite..." });
+            _itemContextMenu.Items.Add(_menuItemClearMarkAsFavorite = new ToolStripMenuItem());
 
             _menuItemMarkAsPassword.Click += (s, e) =>
             {
@@ -55,18 +56,43 @@ namespace SimpleClipboardManager.Dialogs
                     var displayText = string.IsNullOrWhiteSpace(dialog.DisplayText) ? "********" : dialog.DisplayText;
                     _selectedItem?.MarkAsPassword(displayText);
                     _manager.SaveClipboard();
-                    clipboardItemList.Items[clipboardItemList.SelectedIndex] = _selectedItem;
+                    // Update the UI
+                    ClipboardItemList.Items[ClipboardItemList.SelectedIndex] = _selectedItem;
                 }
             };
             _menuItemClearMarkAsPassword.Click += (s, e) =>
             {
                 _selectedItem?.UnmarkAsPassword();
                 _manager.SaveClipboard();
-                clipboardItemList.Items[clipboardItemList.SelectedIndex] = _selectedItem;
+                // Update the UI
+                ClipboardItemList.Items[ClipboardItemList.SelectedIndex] = _selectedItem;
+            };
+            _menuItemMarkAsFavorite.Click += (s, e) =>
+            {
+                var dialog = new MarkAsFavoriteDialog(_manager, _selectedItem);
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    _manager.ClipboardItems.ForEach(ci =>
+                    {
+                        if (ci.Favorite == dialog.FavoriteKey)
+                            ci.UnmarkAsFavorite();
+                    });
+                    _selectedItem.Favorite = dialog.FavoriteKey;
+                    _manager.SaveClipboard();
+                    // Update the UI
+                    ClipboardItemList.Items[ClipboardItemList.SelectedIndex] = _selectedItem;
+                }
+            };
+            _menuItemClearMarkAsFavorite.Click += (s, e) =>
+            {
+                _selectedItem?.UnmarkAsFavorite();
+                _manager.SaveClipboard();
+                // Update the UI
+                ClipboardItemList.Items[ClipboardItemList.SelectedIndex] = _selectedItem;
             };
 
-            clipboardItemList.MouseDown += ClipboardItemList_MouseDown;
-            clipboardItemList.MouseDoubleClick += ClipboardItemList_MouseDoubleClick;
+            ClipboardItemList.MouseDown += ClipboardItemList_MouseDown;
+            ClipboardItemList.MouseDoubleClick += ClipboardItemList_MouseDoubleClick;
             KeyPreview = true;
             KeyDown += ContextMenuForm_KeyDown;
 
@@ -82,7 +108,9 @@ namespace SimpleClipboardManager.Dialogs
                 + Environment.NewLine
                 + "CTRL+Enter = Show context menu for selected element"
                 + Environment.NewLine
-                + "CTRL+SHIFT+digit(1-9) = Paste the n'th element (only first 9)";
+                + "CTRL+SHIFT+digit(1-9) = Paste the n'th element (only first 9)"
+                + Environment.NewLine
+                + "CTRL+SHIFT+FKey(1-12) = Paste the n'th favorite";
         }
 
         public void UpdateTheme(Theme theme, double opacity)
@@ -100,8 +128,8 @@ namespace SimpleClipboardManager.Dialogs
         private void ClipboardItemList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left) return;
-            var index = clipboardItemList.IndexFromPoint(e.Location);
-            if (index != ListBox.NoMatches && index == clipboardItemList.SelectedIndex)
+            var index = ClipboardItemList.IndexFromPoint(e.Location);
+            if (index != ListBox.NoMatches && index == ClipboardItemList.SelectedIndex)
             {
                 Paste();
             }
@@ -109,51 +137,57 @@ namespace SimpleClipboardManager.Dialogs
 
         private void PopulateList()
         {
-            clipboardItemList.Items.Clear();
-            if (_clipboardItems != null)
-                foreach (var item in _clipboardItems)
-                    clipboardItemList.Items.Add(item);
+            ClipboardItemList.Items.Clear();
+            if (_manager.ClipboardItems != null)
+                foreach (var item in _manager.ClipboardItems)
+                    ClipboardItemList.Items.Add(item);
         }
 
         private void ContextMenuForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if ((e.KeyCode & Keys.Escape) == Keys.Escape)
+            if (e.KeyCode == Keys.Escape)
             {
                 Close();
             }
 
-            if (clipboardItemList.SelectedIndex == ListBox.NoMatches)
+            if (ClipboardItemList.SelectedIndex == ListBox.NoMatches)
                 return;
 
-            if ((e.KeyCode & Keys.Enter) == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 if (ModifierKeys == Keys.Control)
                     ShowContextMenu(false);
                 else
                     Paste();
             }
-            else if ((e.KeyCode & Keys.Up) == Keys.Up && ModifierKeys == Keys.Control)
+            else if (e.KeyCode == Keys.Up && ModifierKeys == Keys.Control)
             {
                 MoveSelectedItem(-1);
             }
-            else if ((e.KeyCode & Keys.Down) == Keys.Down && ModifierKeys == Keys.Control)
+            else if (e.KeyCode == Keys.Down && ModifierKeys == Keys.Control)
             {
                 MoveSelectedItem(1);
             }
-            else if ((e.KeyCode & Keys.Delete) == Keys.Delete)
+            else if (e.KeyCode == Keys.Delete)
             {
-                var selectedItem = clipboardItemList.SelectedItem as ClipboardItem;
+                var selectedItem = ClipboardItemList.SelectedItem as ClipboardItem;
                 if (selectedItem != null)
                 {
-                    var selectedIndex = clipboardItemList.SelectedIndex;
-                    clipboardItemList.Items.Remove(selectedItem);
-                    _clipboardItems.Remove(selectedItem);
-                    if (selectedIndex > clipboardItemList.Items.Count - 1)
-                        clipboardItemList.SelectedIndex = clipboardItemList.Items.Count - 1;
-                    else if (clipboardItemList.Items.Count > 0)
-                        clipboardItemList.SelectedIndex = selectedIndex;
+                    var selectedIndex = ClipboardItemList.SelectedIndex;
+                    ClipboardItemList.Items.Remove(selectedItem);
+                    _manager.ClipboardItems.Remove(selectedItem);
+                    if (selectedIndex > ClipboardItemList.Items.Count - 1)
+                        ClipboardItemList.SelectedIndex = ClipboardItemList.Items.Count - 1;
+                    else if (ClipboardItemList.Items.Count > 0)
+                        ClipboardItemList.SelectedIndex = selectedIndex;
                     _manager.SaveClipboard();
                 }
+            }
+            else if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
+            {
+                // Suppress left and right arrows as these will auto-translate to a new key event for up and down respectively
+                // which will cause the above code to start moving the wrong items around.
+                e.SuppressKeyPress = true;
             }
         }
 
@@ -162,27 +196,27 @@ namespace SimpleClipboardManager.Dialogs
             if (places == 0)
                 return;
 
-            _selectedItem = clipboardItemList.SelectedItem as ClipboardItem;
+            _selectedItem = ClipboardItemList.SelectedItem as ClipboardItem;
             if (_selectedItem != null)
             {
-                var currentIndex = _clipboardItems.IndexOf(_selectedItem);
-                if ((places > 0 && currentIndex + places > _clipboardItems.Count - 1) || (places < 0 && currentIndex + places < 0))
+                var currentIndex = _manager.ClipboardItems.IndexOf(_selectedItem);
+                if ((places > 0 && currentIndex + places > _manager.ClipboardItems.Count - 1) || (places < 0 && currentIndex + places < 0))
                     return;
 
-                _clipboardItems.Remove(_selectedItem);
+                _manager.ClipboardItems.Remove(_selectedItem);
                 var newIndex = currentIndex + places;
-                _clipboardItems.Insert(newIndex, _selectedItem);
+                _manager.ClipboardItems.Insert(newIndex, _selectedItem);
                 _manager.SaveClipboard();
                 PopulateList();
-                clipboardItemList.SelectedIndex = newIndex - places;
+                ClipboardItemList.SelectedIndex = newIndex - places;
             }
         }
 
         private void ClipboardItemList_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Right) return;
-            var index = clipboardItemList.IndexFromPoint(e.Location);
-            if (index != ListBox.NoMatches && index == clipboardItemList.SelectedIndex)
+            var index = ClipboardItemList.IndexFromPoint(e.Location);
+            if (index != ListBox.NoMatches && index == ClipboardItemList.SelectedIndex)
             {
                 ShowContextMenu();
             }
@@ -194,18 +228,22 @@ namespace SimpleClipboardManager.Dialogs
 
         private void ShowContextMenu(bool showAtMousePointer = true)
         {
-            _selectedItem = clipboardItemList.SelectedItem as ClipboardItem;
+            _selectedItem = ClipboardItemList.SelectedItem as ClipboardItem;
             if (_selectedItem != null)
             {
                 _menuItemMarkAsPassword.Visible = !_selectedItem.IsPassword;
                 _menuItemClearMarkAsPassword.Visible = _selectedItem.IsPassword;
+                _menuItemMarkAsFavorite.Visible = !_selectedItem.Favorite.HasValue;
+                _menuItemClearMarkAsFavorite.Visible = _selectedItem.Favorite.HasValue;
+                if (_selectedItem.Favorite.HasValue)
+                    _menuItemClearMarkAsFavorite.Text = $"Unmark as favorite (F{_selectedItem.Favorite.Value + 1})";
 
                 var point = Cursor.Position;
                 if (!showAtMousePointer)
                 {
-                    var rect = clipboardItemList.GetItemRectangle(clipboardItemList.SelectedIndex);
-                    point = new Point(rect.Left + 20, rect.Top + clipboardItemList.ItemHeight / 2);
-                    point = clipboardItemList.PointToScreen(point);
+                    var rect = ClipboardItemList.GetItemRectangle(ClipboardItemList.SelectedIndex);
+                    point = new Point(rect.Left + 20, rect.Top + ClipboardItemList.ItemHeight / 2);
+                    point = ClipboardItemList.PointToScreen(point);
                 }
                 _itemContextMenu.Show(point);
                 _itemContextMenu.Visible = true;
@@ -214,13 +252,17 @@ namespace SimpleClipboardManager.Dialogs
 
         private void HighlightFistClipboardItem()
         {
-            clipboardItemList.Focus();
-            if (clipboardItemList.Items.Count > 0)
-                clipboardItemList.SelectedIndex = 0;
+            ClipboardItemList.Focus();
+            if (ClipboardItemList.Items.Count > 0)
+                ClipboardItemList.SelectedIndex = 0;
         }
 
         public void BringInFocus()
         {
+            var selectedItem = ClipboardItemList.SelectedItem;
+            PopulateList();
+            if (selectedItem != null)
+                ClipboardItemList.SelectedItem = selectedItem;
             TopMost = true;
             TopMost = false;
             BringToFront();
@@ -234,7 +276,7 @@ namespace SimpleClipboardManager.Dialogs
 
         private void Paste()
         {
-            var text = (clipboardItemList.SelectedItem as ClipboardItem)?.Text;
+            var text = (ClipboardItemList.SelectedItem as ClipboardItem)?.Text;
             _manager.Paste(text, Hide);
         }
 
@@ -260,8 +302,8 @@ namespace SimpleClipboardManager.Dialogs
 
         private void BtnClear_Click(object sender, EventArgs e)
         {
-            _clipboardItems.Clear();
-            clipboardItemList.Items.Clear();
+            _manager.ClipboardItems.Clear();
+            ClipboardItemList.Items.Clear();
             _manager.SaveClipboard();
         }
 

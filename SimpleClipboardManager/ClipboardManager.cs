@@ -3,9 +3,11 @@ using SimpleClipboardManager.Dialogs;
 using SimpleClipboardManager.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -130,7 +132,16 @@ namespace SimpleClipboardManager
                 thread.Start();
                 thread.Join();
                 prePasteAction?.Invoke();
-                SendKeys.Send("^v");
+                if (_pasteFromClipboardDialog != null)
+                {
+                    SendKeys.Send("^v");
+                }
+                else
+                {
+                    var hWnd = GetFocusedHandle();
+                    if (hWnd != IntPtr.Zero)
+                        SafeNativeMethods.PostMessage(hWnd, SafeNativeMethods.WM_PASTE, IntPtr.Zero, IntPtr.Zero);
+                }
             }
             _pasteFromClipboardDialog?.Close();
         }
@@ -141,9 +152,17 @@ namespace SimpleClipboardManager
 
             public void DoPaste()
             {
-                System.Diagnostics.Debug.WriteLine("Setting text on system clipboard: " + Text);
-                Clipboard.SetText(Text);
+                Clipboard.SetText(Text, TextDataFormat.Text);
             }
+        }
+
+        static IntPtr GetFocusedHandle()
+        {
+            var info = new SafeNativeMethods.GUITHREADINFO();
+            info.cbSize = Marshal.SizeOf(info);
+            if (!SafeNativeMethods.GetGUIThreadInfo(0, ref info))
+                return IntPtr.Zero;
+            return info.hwndFocus;
         }
 
         private void ClipboardNotification_ClipboardUpdated(string text)

@@ -7,6 +7,7 @@ namespace SimpleClipboardManager
     internal static class SafeNativeMethods
     {
         public const int WM_CLIPBOARDUPDATE = 0x031D;
+        public const int WM_PASTE = 0x0302;
         public static IntPtr HWND_MESSAGE = new IntPtr(-3);
         public const long APPMODEL_ERROR_NO_PACKAGE = 15700L;
 
@@ -42,5 +43,24 @@ namespace SimpleClipboardManager
 
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern int GetCurrentPackageFullName(ref int packageFullNameLength, StringBuilder packageFullName);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetGUIThreadInfo(uint idThread, ref GUITHREADINFO lpgui);
+        public struct GUITHREADINFO
+        {
+            public int cbSize;
+            public IntPtr flags;
+            public IntPtr hwndActive;
+            public IntPtr hwndFocus;
+            public IntPtr hwndCapture;
+            public IntPtr hwndMenuOwner;
+            public IntPtr hwndMoveSize;
+            public IntPtr hwndCaret;
+            public System.Drawing.Rectangle rcCaret;
+        }
     }
 }

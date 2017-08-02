@@ -1,13 +1,11 @@
 ﻿using SimpleClipboardManager.Model;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace SimpleClipboardManager.Dialogs
 {
-    public partial class PasteFromClipboardDialog : Form
+    internal partial class PasteFromClipboardDialog : Form
     {
         private ClipboardManager _manager;
         private readonly ContextMenuStrip _itemContextMenu;

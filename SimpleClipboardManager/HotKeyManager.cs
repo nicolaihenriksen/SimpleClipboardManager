@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace SimpleClipboardManager
 {
-    public static class HotKeyManager
+    internal static class HotKeyManager
     {
         public static event Action<HotKeyEventArgs> HotKeyPressed;
 
@@ -21,9 +21,11 @@ namespace SimpleClipboardManager
             Thread messageLoop = new Thread(delegate ()
             {
                 Application.Run(new MessageWindow());
-            });
-            messageLoop.Name = "MessageLoopThread";
-            messageLoop.IsBackground = true;
+            })
+            {
+                Name = "MessageLoopThread",
+                IsBackground = true
+            };
             messageLoop.Start();
         }
 
@@ -84,7 +86,7 @@ namespace SimpleClipboardManager
         }
     }
 
-    public class HotKeyEventArgs : EventArgs
+    internal class HotKeyEventArgs : EventArgs
     {
         public readonly Keys Key;
         public readonly KeyModifiers Modifiers;
@@ -104,7 +106,7 @@ namespace SimpleClipboardManager
     }
 
     [Flags]
-    public enum KeyModifiers
+    internal enum KeyModifiers
     {
         Alt = 1,
         Control = 2,

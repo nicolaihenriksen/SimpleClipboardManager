@@ -2,21 +2,21 @@
 using SimpleClipboardManager.Dialogs;
 using SimpleClipboardManager.Model;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SimpleClipboardManager
 {
-    public class ClipboardManager
+    internal class ClipboardManager
     {
         //Startup registry key and value
         private const string StartupKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
@@ -27,6 +27,7 @@ namespace SimpleClipboardManager
         public List<ClipboardItem> ClipboardItems { get; private set; } = new List<ClipboardItem>();
         public SettingsModel Settings { get; private set; }
         private PasteFromClipboardDialog _pasteFromClipboardDialog;
+        private PasteQueue _pasteQueue = new PasteQueue();
 
         public ClipboardManager()
         {
@@ -125,48 +126,98 @@ namespace SimpleClipboardManager
         {
             if (!string.IsNullOrEmpty(text))
             {
-                ClipboardNotification.SuppressNextEvent();
-                var paster = new Paster { Text = text };
-                Thread thread = new Thread(paster.DoPaste);
-                thread.SetApartmentState(ApartmentState.STA);
-                thread.Start();
-                thread.Join();
-                prePasteAction?.Invoke();
-                if (_pasteFromClipboardDialog != null)
+                if (prePasteAction != null)
                 {
-                    SendKeys.Send("^v");
+                    prePasteAction.Invoke();
+                    // Allow the "hide" action to take effect before pasting. If not done, pasting from the paste dialog may fail from time to time 
+                    Task.Delay(1).Wait();
                 }
-                else
+                var hWnd = GetFocusedControlHandle();
+                if (hWnd != IntPtr.Zero)
                 {
-                    var hWnd = GetFocusedHandle();
-                    if (hWnd != IntPtr.Zero)
-                        SafeNativeMethods.PostMessage(hWnd, SafeNativeMethods.WM_PASTE, IntPtr.Zero, IntPtr.Zero);
+                    _pasteQueue.Add(new PasteInfo { WindowHandle = hWnd, Text = text });
                 }
             }
             _pasteFromClipboardDialog?.Close();
         }
 
-        private class Paster
+        private struct PasteInfo 
         {
-            public string Text { get; set; }
+            public IntPtr WindowHandle;
+            public string Text;
+        } 
 
-            public void DoPaste()
+        private class PasteQueue
+        {
+            private BlockingCollection<PasteInfo> _queue = new BlockingCollection<PasteInfo>();
+
+            public PasteQueue()
             {
-                Clipboard.SetText(Text, TextDataFormat.Text);
+                Task.Run(() => HandleQueueItems());
+            }
+
+            private void HandleQueueItems()
+            {
+                while (!_queue.IsCompleted)
+                {
+                    var item = _queue.Take();
+
+                    /*
+                     * NOTE: The code below assumes it is able to post WM_CHAR messages for the whole string to paste
+                     * before the users moves the focus away from the control. If focus is moved to another control while
+                     * iterating the characters in the string, the remaining characters may be "pasted" into the newly
+                     * focused control (if it accepts key input)
+                     */
+
+                    // Find the location of the control to send the text to
+                    SafeNativeMethods.RECT hWndLocation = new SafeNativeMethods.RECT();
+                    SafeNativeMethods.GetWindowRect(item.WindowHandle, out hWndLocation);
+
+                    // Find a position 2x2 pixels inside the focused control
+                    IntPtr lParam = (IntPtr)(((hWndLocation.Top + 2) << 16) | (hWndLocation.Left + 2));
+
+                    // "Click" the control to have it gain focus
+                    SafeNativeMethods.PostMessage(item.WindowHandle, SafeNativeMethods.WM_LBUTTONDOWN, IntPtr.Zero, lParam);
+                    SafeNativeMethods.PostMessage(item.WindowHandle, SafeNativeMethods.WM_LBUTTONUP, IntPtr.Zero, lParam);
+
+                    // "Paste" each character one by one
+                    foreach (var c in item.Text)
+                    {
+                        SafeNativeMethods.PostMessage(item.WindowHandle, SafeNativeMethods.WM_CHAR, new IntPtr(c), IntPtr.Zero);
+                    }
+                }
+            }
+
+            public void Add(PasteInfo item)
+            {
+                _queue.Add(item);
             }
         }
 
-        static IntPtr GetFocusedHandle()
+        private IntPtr GetFocusedControlHandle()
         {
-            var info = new SafeNativeMethods.GUITHREADINFO();
-            info.cbSize = Marshal.SizeOf(info);
-            if (!SafeNativeMethods.GetGUIThreadInfo(0, ref info))
-                return IntPtr.Zero;
-            return info.hwndFocus;
+            IntPtr activeWindowHandle = SafeNativeMethods.GetForegroundWindow();
+            IntPtr focusedControlHandle = IntPtr.Zero;
+            IntPtr activeWindowThread = SafeNativeMethods.GetWindowThreadProcessId(activeWindowHandle, IntPtr.Zero);
+            var sync = new AutoResetEvent(false);
+            ClipboardNotification.MonitorForm.Invoke(new Action(() =>
+            {
+                IntPtr thisWindowThread = SafeNativeMethods.GetWindowThreadProcessId(ClipboardNotification.MonitorForm.Handle, IntPtr.Zero);
+                SafeNativeMethods.AttachThreadInput(activeWindowThread, thisWindowThread, true);
+                focusedControlHandle = SafeNativeMethods.GetFocus();
+                SafeNativeMethods.AttachThreadInput(activeWindowThread, thisWindowThread, false);
+                sync.Set();
+            }));
+            sync.WaitOne();
+            return focusedControlHandle;
         }
 
         private void ClipboardNotification_ClipboardUpdated(string text)
         {
+            // Ignore continued copies to avoid spamming the clipboard with the same items
+            if (ClipboardItems.Count > 0 && ClipboardItems[0].Text == text)
+                return;
+
             ClipboardItems.Insert(0, new ClipboardItem { Text = text });
             SaveClipboard();
         }

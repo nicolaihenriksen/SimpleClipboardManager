@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace SimpleClipboardManager
 {
-    class ThemeResources
+    internal class ThemeResources
     {
 
         public static Color GetTitleBackColor(Theme theme)

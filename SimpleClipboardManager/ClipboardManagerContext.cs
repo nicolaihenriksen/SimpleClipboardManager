@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace SimpleClipboardManager
 {
-    class ClipboardManagerContext : ApplicationContext
+    internal class ClipboardManagerContext : ApplicationContext
     {
         private NotifyIcon _trayIcon;
         private ClipboardManager _manager;

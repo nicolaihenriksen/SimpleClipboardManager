@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace SimpleClipboardManager.Dialogs
 {
-    public partial class MarkAsFavoriteDialog : Form
+    internal partial class MarkAsFavoriteDialog : Form
     {
         private ClipboardManager _manager;
 

@@ -3,10 +3,10 @@ using System.Windows.Forms;
 
 namespace SimpleClipboardManager
 {
-    public sealed class ClipboardNotification
+    internal class ClipboardNotification
     {
         public static event Action<string> ClipboardUpdated;
-        private static ClipboardUpdatedForm _monitorForm = new ClipboardUpdatedForm();
+        internal static ClipboardUpdatedForm MonitorForm { get; } = new ClipboardUpdatedForm();
 
         private static object _eventLock = new object();
         private static int _eventsToSuppress = 0;
@@ -27,7 +27,7 @@ namespace SimpleClipboardManager
                 ClipboardUpdated?.Invoke(text);
         }
 
-        private class ClipboardUpdatedForm : Form
+        internal class ClipboardUpdatedForm : Form
         {
             public ClipboardUpdatedForm()
             {

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace SimpleClipboardManager.Dialogs
 {
-    public partial class SettingsDialog : Form
+    internal partial class SettingsDialog : Form
     {
         private PasteFromClipboardDialog _pasteFromClipboardDialog;
         private SettingsModel _model;

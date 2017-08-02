@@ -3,7 +3,7 @@
 namespace SimpleClipboardManager
 {
     [Serializable]
-    public class ClipboardItem
+    internal class ClipboardItem
     {
         public string Text { get; set; }
 

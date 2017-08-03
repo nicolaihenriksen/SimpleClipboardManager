@@ -1,4 +1,5 @@
-﻿using SimpleClipboardManager.Model;
+﻿using SimpleClipboardManager.Controls;
+using SimpleClipboardManager.Model;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -14,6 +15,8 @@ namespace SimpleClipboardManager.Dialogs
         private ToolStripMenuItem _menuItemClearMarkAsPassword;
         private ToolStripMenuItem _menuItemMarkAsFavorite;
         private ToolStripMenuItem _menuItemClearMarkAsFavorite;
+
+        private PreviewPanel _previewPanel;
         
         private bool _previouslyActivated;
 
@@ -91,6 +94,21 @@ namespace SimpleClipboardManager.Dialogs
 
             ClipboardItemList.MouseDown += ClipboardItemList_MouseDown;
             ClipboardItemList.MouseDoubleClick += ClipboardItemList_MouseDoubleClick;
+            ClipboardItemList.SelectedIndexChanged += (s, e) =>
+            {
+                if (ClipboardItemList.SelectedItem is ClipboardItem item)
+                {
+                    var rect = ClipboardItemList.GetItemRectangle(ClipboardItemList.SelectedIndex);
+                    var point = new Point(_previewPanel.Left, rect.Top + 43 + ClipboardItemList.ItemHeight / 2);
+                    _previewPanel.Location = point;
+                    _previewPanel.PreviewText = item.PreviewString();
+                    _previewPanel.Visible = _manager.Settings.ShowItemPreview;
+                }
+                else
+                {
+                    _previewPanel.Visible = false;
+                }
+            };
             KeyPreview = true;
             KeyDown += ContextMenuForm_KeyDown;
 
@@ -109,6 +127,19 @@ namespace SimpleClipboardManager.Dialogs
                 + "CTRL+SHIFT+digit(1-9) = Paste the n'th element (only first 9)"
                 + Environment.NewLine
                 + "CTRL+SHIFT+FKey(1-12) = Paste the n'th favorite";
+
+            _previewPanel = new PreviewPanel
+            {
+                BackColor = Color.LightGoldenrodYellow,
+                Width = 350,
+                Height = 108,
+                Top = 150,
+                Left = 420,
+                MaxPreviewLines = _manager.Settings.MaxPreviewLines,
+                Visible = _manager.Settings.ShowItemPreview
+            };
+            Controls.Add(_previewPanel);
+            _previewPanel.BringToFront();
         }
 
         public void UpdateTheme(Theme theme, double opacity)
@@ -294,6 +325,8 @@ namespace SimpleClipboardManager.Dialogs
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 _manager.SaveSettings();
+                _previewPanel.Visible = _manager.Settings.ShowItemPreview;                 
+                _previewPanel.MaxPreviewLines = _manager.Settings.MaxPreviewLines;
             }
             UpdateTheme(_manager.Settings.Theme, _manager.Settings.Opacity);
         }

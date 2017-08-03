@@ -2,7 +2,7 @@
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace SimpleClipboardManager
+namespace SimpleClipboardManager.Controls
 {
     class RoundCornerPanel : Panel
     {

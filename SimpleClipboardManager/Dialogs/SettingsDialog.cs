@@ -17,7 +17,7 @@ namespace SimpleClipboardManager.Dialogs
             _model = model;
             PopulateViewFromModel();
 
-            // Wire up dynamic content (i.e. properties that modify the visual appearance)
+            // Wire up dynamic content (i.e. properties that modify the visual appearance for immediate preview)
             RadioThemeLight.CheckedChanged += DynamicContentChanged;
             RadioThemeDark.CheckedChanged += DynamicContentChanged;
             RadioThemeGreen.CheckedChanged += DynamicContentChanged;
@@ -66,6 +66,8 @@ namespace SimpleClipboardManager.Dialogs
             ComboMaxDisplayItems.SelectedItem = "" + _model.MaxDisplayItems;
             RadioHotKeyControlInsert.Checked = _model.HotKey == HotKey.ControlInsert;
             RadioHotKeyInsert.Checked = _model.HotKey == HotKey.Insert;
+            CheckPreviewEnabled.Checked = _model.ShowItemPreview;
+            ComboMaxPreviewLines.SelectedItem = "" + _model.MaxPreviewLines;
             CheckStorage.Checked = _model.StorageEnabled;
             CheckStartOnBoot.Checked = _model.StartOnBoot;
             RadioThemeLight.Checked = _model.Theme == Theme.Light;
@@ -97,6 +99,8 @@ namespace SimpleClipboardManager.Dialogs
             _model.MinDisplayItems = Convert.ToInt32(ComboMinDisplayItems.SelectedItem);
             _model.MaxDisplayItems = Convert.ToInt32(ComboMaxDisplayItems.SelectedItem);
             _model.HotKey = RadioHotKeyControlInsert.Checked ? HotKey.ControlInsert : HotKey.Insert;
+            _model.ShowItemPreview = CheckPreviewEnabled.Checked;
+            _model.MaxPreviewLines = Convert.ToInt32(ComboMaxPreviewLines.SelectedItem);
             _model.StorageEnabled = CheckStorage.Checked;
             _model.StartOnBoot = !IsRunningAsUwp() && CheckStartOnBoot.Checked;
             _model.Opacity = GetOpacity();

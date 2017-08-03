@@ -296,16 +296,30 @@ namespace SimpleClipboardManager
 
         private static void SetStartOnBoot()
         {
-            // Set the application to run at startup
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
-            key.SetValue(StartupValue, Application.ExecutablePath.ToString());
+            try
+            {
+                // Set the application to run at startup
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
+                key.SetValue(StartupValue, Application.ExecutablePath.ToString());
+            }
+            catch
+            {
+                // Ignore
+            }
         }
 
         private static void RemoveStartOnBoot()
         {
-            // Set the application to run at startup
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
-            key.DeleteValue(StartupValue);
+            try
+            {
+                // Set the application to run at startup
+                RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
+                key.DeleteValue(StartupValue);
+            }
+            catch
+            {
+                // Ignore
+            }
         }
 
         private void LoadSettings()

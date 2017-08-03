@@ -33,6 +33,11 @@ namespace SimpleClipboardManager
             Favorite = null;
         }
 
+        public string PreviewString()
+        {
+            return DisplayText ?? Text;
+        }
+
         public override string ToString()
         {
             var text = DisplayText ?? Text;

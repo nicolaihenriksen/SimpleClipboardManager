@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PasteFromClipboardDialog));
             this.ClipboardItemList = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ContentPanel = new SimpleClipboardManager.RoundCornerPanel();
+            this.ContentPanel = new SimpleClipboardManager.Controls.RoundCornerPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.LblHints = new System.Windows.Forms.Label();
@@ -236,7 +236,7 @@
         #endregion
         private System.Windows.Forms.ListBox ClipboardItemList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private RoundCornerPanel ContentPanel;
+        private Controls.RoundCornerPanel ContentPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.PictureBox BtnClose;
         private System.Windows.Forms.PictureBox BtnSettings;

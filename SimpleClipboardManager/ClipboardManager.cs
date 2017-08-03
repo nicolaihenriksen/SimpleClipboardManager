@@ -22,6 +22,7 @@ namespace SimpleClipboardManager
         private const string StartupKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         private const string StartupValue = "SimpleClipboardManager";
 
+        private readonly object FileAccessLock = new object();
         private const string ClipboardDataFileName = "clipboard.data";
         private const string SettingsFileName = "settings.xml";
         public List<ClipboardItem> ClipboardItems { get; private set; } = new List<ClipboardItem>();
@@ -65,27 +66,35 @@ namespace SimpleClipboardManager
 
         private void HotKeyManager_HotKeyPressed(HotKeyEventArgs e)
         {
-            if (e.Key == Keys.Insert) {
-                HandleActivationHotKey(e.Modifiers);
-                return;
-            }
-            if (e.Modifiers != (KeyModifiers.Control | KeyModifiers.Shift))
-                return;
+            try
+            {
+                if (e.Key == Keys.Insert)
+                {
+                    HandleActivationHotKey(e.Modifiers);
+                    return;
+                }
+                if (e.Modifiers != (KeyModifiers.Control | KeyModifiers.Shift))
+                    return;
 
-            if (e.Key >= Keys.D1 && e.Key <= Keys.D9)
-            {
-                // Paste the n'th item from the clipboard
-                var index = (int)e.Key - 49;     // 49 is the ASCII equivalent for the digit 1
-                if (ClipboardItems.Count > index)
-                    Paste(ClipboardItems[index].Text, () => _pasteFromClipboardDialog?.Hide());
+                if (e.Key >= Keys.D1 && e.Key <= Keys.D9)
+                {
+                    // Paste the n'th item from the clipboard
+                    var index = (int)e.Key - 49;     // 49 is the ASCII equivalent for the digit 1
+                    if (ClipboardItems.Count > index)
+                        Paste(ClipboardItems[index].Text, () => _pasteFromClipboardDialog?.Hide());
+                }
+                else if (e.Key >= Keys.F1 && e.Key <= Keys.F12)
+                {
+                    // Paste the n'th item from favorites
+                    var index = (int)e.Key - 112;    // 112 is the ASCII equivalent for the F1 key
+                    var favorite = ClipboardItems.FirstOrDefault(ci => ci.Favorite == index);
+                    if (favorite != null)
+                        Paste(favorite.Text, () => _pasteFromClipboardDialog?.Hide());
+                }
             }
-            else if (e.Key >= Keys.F1 && e.Key <= Keys.F12)
+            catch
             {
-                // Paste the n'th item from favorites
-                var index = (int)e.Key - 112;    // 112 is the ASCII equivalent for the F1 key
-                var favorite = ClipboardItems.FirstOrDefault(ci => ci.Favorite == index);
-                if (favorite != null)
-                    Paste(favorite.Text, () => _pasteFromClipboardDialog?.Hide());
+                // If an error occurs, we hope we can just continue on assuming it was a one time error :-/
             }
         }
 
@@ -108,6 +117,7 @@ namespace SimpleClipboardManager
             _pasteFromClipboardDialog = new PasteFromClipboardDialog(this, activeAppTitle);
             _pasteFromClipboardDialog.FormClosed += (s, e1) => _pasteFromClipboardDialog = null;
             _pasteFromClipboardDialog.ShowDialog();
+
         }
 
         private string GetActiveWindowTitle()
@@ -162,28 +172,22 @@ namespace SimpleClipboardManager
                 {
                     var item = _queue.Take();
 
-                    /*
-                     * NOTE: The code below assumes it is able to post WM_CHAR messages for the whole string to paste
-                     * before the users moves the focus away from the control. If focus is moved to another control while
-                     * iterating the characters in the string, the remaining characters may be "pasted" into the newly
-                     * focused control (if it accepts key input)
-                     */
-
-                    // Find the location of the control to send the text to
-                    SafeNativeMethods.RECT hWndLocation = new SafeNativeMethods.RECT();
-                    SafeNativeMethods.GetWindowRect(item.WindowHandle, out hWndLocation);
-
-                    // Find a position 2x2 pixels inside the focused control
-                    IntPtr lParam = (IntPtr)(((hWndLocation.Top + 2) << 16) | (hWndLocation.Left + 2));
-
-                    // "Click" the control to have it gain focus
-                    SafeNativeMethods.PostMessage(item.WindowHandle, SafeNativeMethods.WM_LBUTTONDOWN, IntPtr.Zero, lParam);
-                    SafeNativeMethods.PostMessage(item.WindowHandle, SafeNativeMethods.WM_LBUTTONUP, IntPtr.Zero, lParam);
-
-                    // "Paste" each character one by one
-                    foreach (var c in item.Text)
+                    try
                     {
-                        SafeNativeMethods.PostMessage(item.WindowHandle, SafeNativeMethods.WM_CHAR, new IntPtr(c), IntPtr.Zero);
+                        /*
+                         * NOTE: The code below assumes it is able to post WM_CHAR messages for the whole string to paste
+                         * before the users moves the focus away from the control. If focus is moved to another control while
+                         * iterating the characters in the string, the remaining characters may be "pasted" into the newly
+                         * focused control (if it accepts key input)
+                         */
+
+                        // "Paste" each character one by one
+                        foreach (var c in item.Text)
+                            SafeNativeMethods.PostMessage(item.WindowHandle, SafeNativeMethods.WM_CHAR, new IntPtr(c), IntPtr.Zero);
+                    }
+                    catch
+                    {
+                        // If anything goes wrong while "pasting", we ignore it and hope we continue on :-/
                     }
                 }
             }
@@ -226,13 +230,16 @@ namespace SimpleClipboardManager
         {
             if (Settings.StorageEnabled)
             {
-                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
+                lock (FileAccessLock)
                 {
-                    using (var fs = isoStore.OpenFile(ClipboardDataFileName, FileMode.Create))
+                    using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
                     {
-                        var bf = new BinaryFormatter();
-                        bf.Serialize(fs, ClipboardItems);
-                        fs.Flush();
+                        using (var fs = isoStore.OpenFile(ClipboardDataFileName, FileMode.Create))
+                        {
+                            var bf = new BinaryFormatter();
+                            bf.Serialize(fs, ClipboardItems);
+                            fs.Flush();
+                        }
                     }
                 }
             }
@@ -240,20 +247,23 @@ namespace SimpleClipboardManager
 
         private void LoadClipboard()
         {
-            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
+            lock (FileAccessLock)
             {
-                if (!isoStore.FileExists(ClipboardDataFileName))
-                    return;
-                using (var fs = isoStore.OpenFile(ClipboardDataFileName, FileMode.Open))
+                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
                 {
-                    if (Settings.StorageEnabled)
+                    if (!isoStore.FileExists(ClipboardDataFileName))
+                        return;
+                    using (var fs = isoStore.OpenFile(ClipboardDataFileName, FileMode.Open))
                     {
-                        var bf = new BinaryFormatter();
-                        ClipboardItems = (List<ClipboardItem>)bf.Deserialize(fs);
-                    }
-                    else
-                    {
-                        isoStore.DeleteFile(ClipboardDataFileName);
+                        if (Settings.StorageEnabled)
+                        {
+                            var bf = new BinaryFormatter();
+                            ClipboardItems = (List<ClipboardItem>)bf.Deserialize(fs);
+                        }
+                        else
+                        {
+                            isoStore.DeleteFile(ClipboardDataFileName);
+                        }
                     }
                 }
             }
@@ -262,93 +272,79 @@ namespace SimpleClipboardManager
         public void SaveSettings()
         {
             var serializer = new DataContractSerializer(typeof(SettingsModel));
-            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
+            lock (FileAccessLock)
             {
-                using (var fs = isoStore.OpenFile(SettingsFileName, FileMode.Create))
+                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
                 {
-                    serializer.WriteObject(fs, Settings);
-                }
-                // Clean up if storage was disabled
-                if (Settings.StorageEnabled)
-                    SaveClipboard();
-                else if (isoStore.FileExists(ClipboardDataFileName))
-                    isoStore.DeleteFile(ClipboardDataFileName);
+                    using (var fs = isoStore.OpenFile(SettingsFileName, FileMode.Create))
+                    {
+                        serializer.WriteObject(fs, Settings);
+                    }
+                    // Clean up if storage was disabled
+                    if (Settings.StorageEnabled)
+                        SaveClipboard();
+                    else if (isoStore.FileExists(ClipboardDataFileName))
+                        isoStore.DeleteFile(ClipboardDataFileName);
 
-                if (Settings.StartOnBoot)
-                    SetStartOnBoot();
-                else
-                    RemoveStartOnBoot();
+                    if (Settings.StartOnBoot)
+                        SetStartOnBoot();
+                    else
+                        RemoveStartOnBoot();
+                }
             }
         }
 
         private static void SetStartOnBoot()
         {
-            // Set the application to run at startup
             try
             {
+                // Set the application to run at startup
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
                 key.SetValue(StartupValue, Application.ExecutablePath.ToString());
             }
-            catch (Exception e)
+            catch
             {
-                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
-                {
-                    using (var fs = isoStore.OpenFile("log.txt", FileMode.Append))
-                    {
-                        using (var sw = new StreamWriter(fs))
-                        {
-                            sw.WriteLine(e.Message);
-                            sw.WriteLine(e.StackTrace);
-                        }
-                    }
-                }
+                // Ignore
             }
         }
 
         private static void RemoveStartOnBoot()
         {
-            // Set the application to run at startup
             try
             {
+                // Set the application to run at startup
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(StartupKey, true);
                 key.DeleteValue(StartupValue);
             }
-            catch (Exception e)
+            catch
             {
-                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
-                {
-                    using (var fs = isoStore.OpenFile("log.txt", FileMode.Append))
-                    {
-                        using (var sw = new StreamWriter(fs))
-                        {
-                            sw.WriteLine(e.Message);
-                            sw.WriteLine(e.StackTrace);
-                        }
-                    }
-                }
+                // Ignore
             }
         }
 
         private void LoadSettings()
         {
             var serializer = new DataContractSerializer(typeof(SettingsModel));
-            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
+            lock (FileAccessLock)
             {
-                if (!isoStore.FileExists(SettingsFileName))
+                using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Domain | IsolatedStorageScope.Assembly, null, null))
                 {
-                    Settings = new SettingsModel();
-                    return;
-                }
-                using (var fs = isoStore.OpenFile(SettingsFileName, FileMode.Open))
-                {
-                    try
+                    if (!isoStore.FileExists(SettingsFileName))
                     {
-                        Settings = (SettingsModel)serializer.ReadObject(fs);
-                    }
-                    catch
-                    {
-                        // Invalid settings file, use defaults
                         Settings = new SettingsModel();
+                        return;
+                    }
+                    using (var fs = isoStore.OpenFile(SettingsFileName, FileMode.Open))
+                    {
+                        try
+                        {
+                            Settings = (SettingsModel)serializer.ReadObject(fs);
+                        }
+                        catch
+                        {
+                            // Invalid settings file, use defaults
+                            Settings = new SettingsModel();
+                        }
                     }
                 }
             }

@@ -53,6 +53,9 @@
     <Compile Include="ClipboardManager.cs" />
     <Compile Include="ClipboardManagerContext.cs" />
     <Compile Include="ClipboardNotification.cs" />
+    <Compile Include="Controls\PreviewPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Dialogs\MarkAsFavoriteDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,7 +90,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RoundCornerPanel.cs">
+    <Compile Include="Controls\RoundCornerPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SafeNativeMethods.cs" />

@@ -39,5 +39,11 @@ namespace SimpleClipboardManager.Model
 
         [DataMember]
         public double Opacity { get; set; } = 1;
+
+        [DataMember]
+        public bool ShowItemPreview { get; set; } = true;
+
+        [DataMember]
+        public int MaxPreviewLines { get; set; } = 3;
     }
 }

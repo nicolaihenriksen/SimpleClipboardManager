@@ -35,7 +35,7 @@ namespace SimpleClipboardManager.Dialogs
                 var removedPixels = 27;
                 LblDisclaimerHeader.Top -= removedPixels;
                 LblDisclaimerText.Top -= removedPixels;
-                tableLayoutPanel1.RowStyles[2].Height -= removedPixels;
+                tableLayoutPanel1.RowStyles[3].Height -= removedPixels;
                 Height -= removedPixels;
             }
         }

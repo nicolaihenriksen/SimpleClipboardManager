@@ -199,8 +199,7 @@ namespace SimpleClipboardManager.Dialogs
             }
             else if (e.KeyCode == Keys.Delete)
             {
-                var selectedItem = ClipboardItemList.SelectedItem as ClipboardItem;
-                if (selectedItem != null)
+                if (ClipboardItemList.SelectedItem is ClipboardItem selectedItem)
                 {
                     var selectedIndex = ClipboardItemList.SelectedIndex;
                     ClipboardItemList.Items.Remove(selectedItem);
@@ -341,8 +340,7 @@ namespace SimpleClipboardManager.Dialogs
         private void TitleButton_Hover(object sender, EventArgs e)
         {
             ToolTip tt = new ToolTip();
-            var ctrl = sender as Control;
-            if (ctrl != null)
+            if (sender is Control ctrl)
                 tt.SetToolTip(ctrl, ctrl.Tag?.ToString());
         }
     }

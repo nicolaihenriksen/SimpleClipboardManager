@@ -98,8 +98,10 @@ namespace SimpleClipboardManager.Dialogs
             {
                 if (ClipboardItemList.SelectedItem is ClipboardItem item)
                 {
+                    var listOffset = ClipboardItemList.LocationInForm();
+                    var left = Width - _previewPanel.Width - 30;
                     var rect = ClipboardItemList.GetItemRectangle(ClipboardItemList.SelectedIndex);
-                    var point = new Point(_previewPanel.Left, rect.Top + 43 + ClipboardItemList.ItemHeight / 2);
+                    var point = new Point(left, listOffset.Y + rect.Top + ClipboardItemList.ItemHeight / 2);
                     _previewPanel.Location = point;
                     _previewPanel.PreviewText = item.PreviewString();
                     _previewPanel.Visible = _manager.Settings.ShowItemPreview;
@@ -133,8 +135,6 @@ namespace SimpleClipboardManager.Dialogs
                 BackColor = Color.LightGoldenrodYellow,
                 Width = 350,
                 Height = 108,
-                Top = 150,
-                Left = 420,
                 MaxPreviewLines = _manager.Settings.MaxPreviewLines,
                 Visible = _manager.Settings.ShowItemPreview
             };

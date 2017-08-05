@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap rescap mp">
-  <Identity Name="21227NicolaiHenriksen.SimpleClipboardManager" ProcessorArchitecture="x64" Version="1.5.0.0" Publisher="CN=786B4C61-591E-4C79-AA02-E3FF377CBEB8" />
+  <Identity Name="21227NicolaiHenriksen.SimpleClipboardManager" ProcessorArchitecture="x64" Version="1.6.0.0" Publisher="CN=786B4C61-591E-4C79-AA02-E3FF377CBEB8" />
   <mp:PhoneIdentity PhoneProductId="8192dabb-fcf6-4a62-bba6-799f81dd3851" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Simple Clipboard Manager</DisplayName>

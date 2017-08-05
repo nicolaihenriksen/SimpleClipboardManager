@@ -80,6 +80,7 @@
     <Compile Include="Dialogs\SettingsDialog.Designer.cs">
       <DependentUpon>SettingsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="GraphicsExtension.cs" />
     <Compile Include="HotKeyManager.cs" />
     <Compile Include="Model\SettingsModel.cs" />

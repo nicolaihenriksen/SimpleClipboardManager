@@ -50,14 +50,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.BtnSettings)).BeginInit();
             this.SuspendLayout();
             // 
-            // clipboardItemList
+            // ClipboardItemList
             // 
             this.ClipboardItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ClipboardItemList.FormattingEnabled = true;
             this.ClipboardItemList.ItemHeight = 16;
             this.ClipboardItemList.Location = new System.Drawing.Point(6, 6);
             this.ClipboardItemList.Margin = new System.Windows.Forms.Padding(6, 6, 6, 0);
-            this.ClipboardItemList.Name = "clipboardItemList";
+            this.ClipboardItemList.Name = "ClipboardItemList";
             this.ClipboardItemList.Size = new System.Drawing.Size(785, 84);
             this.ClipboardItemList.TabIndex = 1;
             // 

@@ -22,9 +22,16 @@ namespace SimpleClipboardManager
 
         private static void OnClipboardUpdate(EventArgs e)
         {
-            var text = Clipboard.GetText();
-            if (!string.IsNullOrWhiteSpace(text))
-                ClipboardUpdated?.Invoke(text);
+            try
+            {
+                var text = Clipboard.GetText();
+                if (!string.IsNullOrWhiteSpace(text))
+                    ClipboardUpdated?.Invoke(text);
+            }
+            catch
+            {
+                // This can/will happen, unsure of the exact scenario, but simply ignore it.
+            }
         }
 
         internal class ClipboardUpdatedForm : Form

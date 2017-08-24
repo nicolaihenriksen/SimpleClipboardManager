@@ -32,7 +32,7 @@ namespace SimpleClipboardManager.Dialogs
             if (IsRunningAsUwp())
             {
                 CheckStartOnBoot.Visible = false;
-                var removedPixels = 27;
+                var removedPixels = CheckStartOnBoot.Height + 4;
                 LblDisclaimerHeader.Top -= removedPixels;
                 LblDisclaimerText.Top -= removedPixels;
                 tableLayoutPanel1.RowStyles[3].Height -= removedPixels;

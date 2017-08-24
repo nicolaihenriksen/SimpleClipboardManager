@@ -1,5 +1,7 @@
 # Simple Clipboard Manager
 
+Available from the [Windows Store](https://www.microsoft.com/store/apps/9p68k1bl0m7g).
+
 Simple implementation of a clipboard manager which allows you more control over the strings you copy and paste. Selective strings can be marked as favorites and/or as passwords (see sections below).
 When activated by the selected hotkey, the following dialog is displayed:
 

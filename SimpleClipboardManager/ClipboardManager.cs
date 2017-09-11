@@ -29,6 +29,7 @@ namespace SimpleClipboardManager
         public SettingsModel Settings { get; private set; }
         private PasteFromClipboardDialog _pasteFromClipboardDialog;
         private PasteQueue _pasteQueue = new PasteQueue();
+        private ManualResetEventSlim _modifiersReleased = new ManualResetEventSlim();
 
         public ClipboardManager()
         {
@@ -60,6 +61,7 @@ namespace SimpleClipboardManager
             HotKeyManager.RegisterHotKey(Keys.F11, KeyModifiers.Control | KeyModifiers.Shift);
             HotKeyManager.RegisterHotKey(Keys.F12, KeyModifiers.Control | KeyModifiers.Shift);
             HotKeyManager.HotKeyPressed += HotKeyManager_HotKeyPressed;
+            HotKeyManager.ModifiersReleased += () => _modifiersReleased.Set();
             LoadSettings();
             LoadClipboard();
         }
@@ -81,7 +83,7 @@ namespace SimpleClipboardManager
                     // Paste the n'th item from the clipboard
                     var index = (int)e.Key - 49;     // 49 is the ASCII equivalent for the digit 1
                     if (ClipboardItems.Count > index)
-                        Paste(ClipboardItems[index].Text, () => _pasteFromClipboardDialog?.Hide());
+                        Paste(ClipboardItems[index].Text, true, () => _pasteFromClipboardDialog?.Hide());
                 }
                 else if (e.Key >= Keys.F1 && e.Key <= Keys.F12)
                 {
@@ -89,7 +91,7 @@ namespace SimpleClipboardManager
                     var index = (int)e.Key - 112;    // 112 is the ASCII equivalent for the F1 key
                     var favorite = ClipboardItems.FirstOrDefault(ci => ci.Favorite == index);
                     if (favorite != null)
-                        Paste(favorite.Text, () => _pasteFromClipboardDialog?.Hide());
+                        Paste(favorite.Text, true, () => _pasteFromClipboardDialog?.Hide());
                 }
             }
             catch
@@ -132,7 +134,7 @@ namespace SimpleClipboardManager
             return null;
         }
 
-        public void Paste(string text, Action prePasteAction = null)
+        public void Paste(string text, bool waitForModifiersReleased = false, Action prePasteAction = null)
         {
             if (!string.IsNullOrEmpty(text))
             {
@@ -140,12 +142,19 @@ namespace SimpleClipboardManager
                 {
                     prePasteAction.Invoke();
                     // Allow the "hide" action to take effect before pasting. If not done, pasting from the paste dialog may fail from time to time 
-                    Task.Delay(1).Wait();
+                    Task.Delay(10).Wait();
                 }
                 var hWnd = GetFocusedControlHandle();
                 if (hWnd != IntPtr.Zero)
                 {
-                    _pasteQueue.Add(new PasteInfo { WindowHandle = hWnd, Text = text });
+                    if (waitForModifiersReleased)
+                        _modifiersReleased.Reset();
+                    Task.Run(() =>
+                    {
+                        if (waitForModifiersReleased)
+                            _modifiersReleased.Wait();
+                        _pasteQueue.Add(new PasteInfo { WindowHandle = hWnd, Text = text });
+                    });
                 }
             }
             _pasteFromClipboardDialog?.Close();

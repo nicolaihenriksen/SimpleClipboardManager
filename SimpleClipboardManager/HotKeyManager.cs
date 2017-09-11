@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
+using static SimpleClipboardManager.SafeNativeMethods;
 
 namespace SimpleClipboardManager
 {
     internal static class HotKeyManager
     {
         public static event Action<HotKeyEventArgs> HotKeyPressed;
+        public static event Action ModifiersReleased;
 
         private delegate void RegisterHotKeyDelegate(IntPtr hwnd, int id, uint modifiers, uint key);
         private delegate void UnRegisterHotKeyDelegate(IntPtr hwnd, int id);
@@ -15,6 +17,7 @@ namespace SimpleClipboardManager
         private static volatile IntPtr _hwnd;
         private static ManualResetEvent _windowReadyEvent = new ManualResetEvent(false);
         private static int _id = 0;
+        private static bool _isHotkeyPressed;
 
         static HotKeyManager()
         {
@@ -54,18 +57,67 @@ namespace SimpleClipboardManager
 
         private static void OnHotKeyPressed(HotKeyEventArgs e)
         {
-            HotKeyPressed?.Invoke(e);
+            if (e.Key == Keys.Insert || !_isHotkeyPressed)
+            {
+                _isHotkeyPressed = true;
+                HotKeyPressed?.Invoke(e);
+            }
+        }
+
+        private static void OnModifiersReleased()
+        {
+            _isHotkeyPressed = false;
+            ModifiersReleased?.Invoke();
         }
 
         private class MessageWindow : Form
         {
-            private const int WM_HOTKEY = 0x312;
+            private HookHandlerDelegate _callback;
+            private IntPtr _hookId;
 
             public MessageWindow()
             {
                 _wnd = this;
-                _hwnd = this.Handle;
+                _hwnd = Handle;
                 _windowReadyEvent.Set();
+                _callback = new HookHandlerDelegate(HookCallback);
+                _hookId = SetWindowsHookEx(WH_KEYBOARD_LL, _callback, IntPtr.Zero, 0);
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                UnhookWindowsHookEx(_hookId);
+                base.Dispose(disposing);
+            }
+
+            private IntPtr HookCallback(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam)
+            {
+                IntPtr retVal = CallNextHookEx(_hookId, nCode, wParam, ref lParam);
+                if (nCode >= 0)
+                {
+                    if (wParam == (IntPtr)WM_KEYUP || wParam == (IntPtr)WM_SYSKEYUP)
+                    {
+                        if (lParam.vkCode >= 160 && lParam.vkCode <= 161)
+                        {
+                            // Shift key is released
+                            if (ModifierKeys == Keys.Shift)
+                            {
+                                // Shift was the only modifier left! (if both SHIFTs were pressed, this will fire when one is released. Unlikely scenario so nothing is done to support it)
+                                OnModifiersReleased();
+                            }
+                        }
+                        if (lParam.vkCode >= 162 && lParam.vkCode <= 163)
+                        {
+                            // Control key is released
+                            if (ModifierKeys == Keys.Control)
+                            {
+                                // Control was the only modifier left (if both CTRLs were pressed, this will fire when one is released. Unlikely scenario so nothing is done to support it)
+                                OnModifiersReleased();
+                            }
+                        }
+                    }
+                }
+                return retVal;
             }
 
             protected override void WndProc(ref Message m)

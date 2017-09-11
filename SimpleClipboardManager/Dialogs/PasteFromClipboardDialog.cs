@@ -305,7 +305,7 @@ namespace SimpleClipboardManager.Dialogs
         private void Paste()
         {
             var text = (ClipboardItemList.SelectedItem as ClipboardItem)?.Text;
-            _manager.Paste(text, Hide);
+            _manager.Paste(text, false, Hide);
         }
 
         private class Paster

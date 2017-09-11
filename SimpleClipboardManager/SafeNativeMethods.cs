@@ -12,6 +12,10 @@ namespace SimpleClipboardManager
         public const int WM_LBUTTONDOWN = 0x0201;
         public const int WM_LBUTTONUP = 0x0202;
         public const int WM_CHAR = 0x0102;
+        public const int WH_KEYBOARD_LL = 13;
+        public const int WM_HOTKEY = 0x312;
+        public const int WM_KEYUP = 0x0101;
+        public const int WM_SYSKEYUP = 0x0105;
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -57,5 +61,26 @@ namespace SimpleClipboardManager
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetFocus();
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr SetWindowsHookEx(int idHook, HookHandlerDelegate lpfn, IntPtr hMod, uint dwThreadId);
+
+        internal delegate IntPtr HookHandlerDelegate(int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam);
+
+        internal struct KBDLLHOOKSTRUCT
+        {
+            public int vkCode;
+            int scanCode;
+            public int flags;
+            int time;
+            int dwExtraInfo;
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, ref KBDLLHOOKSTRUCT lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool UnhookWindowsHookEx(IntPtr hhk);
     }
 }

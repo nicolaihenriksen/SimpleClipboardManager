@@ -27,7 +27,7 @@ namespace SimpleClipboardManager
 
         private void ShowSettings(object sender, EventArgs e)
         {
-            var dialog = new SettingsDialog(null, _manager.Settings)
+            var dialog = new SettingsDialog(null, _manager)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };

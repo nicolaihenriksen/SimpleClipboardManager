@@ -232,6 +232,7 @@ namespace SimpleClipboardManager
                 return;
 
             ClipboardItems.Insert(0, new ClipboardItem { Text = text });
+            TruncateClipboardIfNeeded();
             SaveClipboard();
         }
 
@@ -280,6 +281,7 @@ namespace SimpleClipboardManager
 
         public void SaveSettings()
         {
+            TruncateClipboardIfNeeded();
             var serializer = new DataContractSerializer(typeof(SettingsModel));
             lock (FileAccessLock)
             {
@@ -300,6 +302,20 @@ namespace SimpleClipboardManager
                     else
                         RemoveStartOnBoot();
                 }
+            }
+        }
+
+        private void TruncateClipboardIfNeeded()
+        {
+            var numItemsToRemove = ClipboardItems.Count - Settings.MaxStoredItems;
+            if (numItemsToRemove <= 0)
+                return;
+            var copy = new List<ClipboardItem>(ClipboardItems.Where(ci => ci.Favorite.HasValue == false));
+            copy.Reverse();
+            for (int i=0; i<numItemsToRemove; i++)
+            {
+                var itemToRemove = copy[i];
+                ClipboardItems.Remove(itemToRemove);
             }
         }
 

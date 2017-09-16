@@ -320,7 +320,7 @@ namespace SimpleClipboardManager.Dialogs
 
         private void BtnSettings_Click(object sender, EventArgs e)
         {
-            var dialog = new SettingsDialog(this, _manager.Settings);
+            var dialog = new SettingsDialog(this, _manager);
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 _manager.SaveSettings();

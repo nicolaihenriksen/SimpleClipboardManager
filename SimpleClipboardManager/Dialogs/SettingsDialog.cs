@@ -68,7 +68,6 @@ namespace SimpleClipboardManager.Dialogs
 
         private bool IsRunningAsUwp()
         {
-            return true;
             if (!OsSupportsUwp())
                 return false;
             int length = 0;

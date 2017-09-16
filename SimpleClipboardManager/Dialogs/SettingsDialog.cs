@@ -1,5 +1,6 @@
 ﻿using SimpleClipboardManager.Model;
 using System;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -7,14 +8,17 @@ namespace SimpleClipboardManager.Dialogs
 {
     internal partial class SettingsDialog : Form
     {
+        private ClipboardManager _manager;
         private PasteFromClipboardDialog _pasteFromClipboardDialog;
         private SettingsModel _model;
+        private int _lastMaxStoredItemsValue;
 
-        public SettingsDialog(PasteFromClipboardDialog pasteFromClipboardDialog, SettingsModel model)
+        public SettingsDialog(PasteFromClipboardDialog pasteFromClipboardDialog, ClipboardManager manager)
         {
             InitializeComponent();
+            _manager = manager;
             _pasteFromClipboardDialog = pasteFromClipboardDialog;
-            _model = model;
+            _model = _manager.Settings;
             PopulateViewFromModel();
 
             // Wire up dynamic content (i.e. properties that modify the visual appearance for immediate preview)
@@ -24,13 +28,35 @@ namespace SimpleClipboardManager.Dialogs
             RadioThemeBlue.CheckedChanged += DynamicContentChanged;
             TrackOpacity.ValueChanged += DynamicContentChanged;
 
+            ComboMaxItemsStored.SelectedValueChanged += ComboMaxItemsStored_SelectedValueChanged;
+
             ModifyLayoutBasedOnAppType();
+        }
+
+        private void ComboMaxItemsStored_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var max = Convert.ToInt32(ComboMaxItemsStored.SelectedItem);
+            if (_manager.ClipboardItems.Count <= max)
+            {
+                _lastMaxStoredItemsValue = max;
+                return;
+            }
+            var numToDelete = _manager.ClipboardItems.Count - max;
+            var result = MessageBox.Show(this, $"The {numToDelete} oldest, non-favorite, items will be deleted, are you sure you wish to continue?", "Items will be deleted", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+                _lastMaxStoredItemsValue = max;
+                return;
+            }
+            if (max != _lastMaxStoredItemsValue)
+                ComboMaxItemsStored.SelectedItem = "" + _lastMaxStoredItemsValue;
         }
 
         private void ModifyLayoutBasedOnAppType()
         {
             if (IsRunningAsUwp())
             {
+                GroupBoxStorageAndStartup.Text = "Storage";
                 CheckStartOnBoot.Visible = false;
                 var removedPixels = CheckStartOnBoot.Height + 4;
                 LblDisclaimerHeader.Top -= removedPixels;
@@ -69,6 +95,8 @@ namespace SimpleClipboardManager.Dialogs
             CheckPreviewEnabled.Checked = _model.ShowItemPreview;
             ComboMaxPreviewLines.SelectedItem = "" + _model.MaxPreviewLines;
             CheckStorage.Checked = _model.StorageEnabled;
+            ComboMaxItemsStored.SelectedItem = "" + _model.MaxStoredItems;
+            _lastMaxStoredItemsValue = _model.MaxStoredItems;
             CheckStartOnBoot.Checked = _model.StartOnBoot;
             RadioThemeLight.Checked = _model.Theme == Theme.Light;
             RadioThemeDark.Checked = _model.Theme == Theme.Dark;
@@ -102,6 +130,7 @@ namespace SimpleClipboardManager.Dialogs
             _model.ShowItemPreview = CheckPreviewEnabled.Checked;
             _model.MaxPreviewLines = Convert.ToInt32(ComboMaxPreviewLines.SelectedItem);
             _model.StorageEnabled = CheckStorage.Checked;
+            _model.MaxStoredItems = Convert.ToInt32(ComboMaxItemsStored.SelectedItem);
             _model.StartOnBoot = !IsRunningAsUwp() && CheckStartOnBoot.Checked;
             _model.Opacity = GetOpacity();
             _model.Theme = GetTheme();

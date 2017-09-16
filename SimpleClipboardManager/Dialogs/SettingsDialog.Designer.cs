@@ -41,7 +41,9 @@
             this.RadioThemeGreen = new System.Windows.Forms.RadioButton();
             this.RadioThemeDark = new System.Windows.Forms.RadioButton();
             this.RadioThemeLight = new System.Windows.Forms.RadioButton();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.GroupBoxStorageAndStartup = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.ComboMaxItemsStored = new System.Windows.Forms.ComboBox();
             this.CheckStartOnBoot = new System.Windows.Forms.CheckBox();
             this.CheckStorage = new System.Windows.Forms.CheckBox();
             this.LblDisclaimerText = new System.Windows.Forms.Label();
@@ -65,7 +67,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.TrackOpacity)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.GroupBoxStorageAndStartup.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -78,9 +80,9 @@
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.Controls.Add(this.TrackOpacity);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox5.Location = new System.Drawing.Point(3, 466);
+            this.groupBox5.Location = new System.Drawing.Point(3, 496);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(446, 75);
+            this.groupBox5.Size = new System.Drawing.Size(485, 75);
             this.groupBox5.TabIndex = 9;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Opacity";
@@ -125,7 +127,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.Controls.Add(this.BtnOk, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.BtnCancel, 2, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(140, 560);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(159, 586);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -162,9 +164,9 @@
             this.groupBox4.Controls.Add(this.RadioThemeDark);
             this.groupBox4.Controls.Add(this.RadioThemeLight);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 407);
+            this.groupBox4.Location = new System.Drawing.Point(3, 437);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(446, 53);
+            this.groupBox4.Size = new System.Drawing.Size(485, 53);
             this.groupBox4.TabIndex = 8;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Theme";
@@ -213,24 +215,81 @@
             this.RadioThemeLight.Text = "Light";
             this.RadioThemeLight.UseVisualStyleBackColor = true;
             // 
-            // groupBox3
+            // GroupBoxStorageAndStartup
             // 
-            this.groupBox3.Controls.Add(this.CheckStartOnBoot);
-            this.groupBox3.Controls.Add(this.CheckStorage);
-            this.groupBox3.Controls.Add(this.LblDisclaimerText);
-            this.groupBox3.Controls.Add(this.LblDisclaimerHeader);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(3, 287);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(446, 114);
-            this.groupBox3.TabIndex = 7;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Storage && Startup";
+            this.GroupBoxStorageAndStartup.Controls.Add(this.label6);
+            this.GroupBoxStorageAndStartup.Controls.Add(this.ComboMaxItemsStored);
+            this.GroupBoxStorageAndStartup.Controls.Add(this.CheckStartOnBoot);
+            this.GroupBoxStorageAndStartup.Controls.Add(this.CheckStorage);
+            this.GroupBoxStorageAndStartup.Controls.Add(this.LblDisclaimerText);
+            this.GroupBoxStorageAndStartup.Controls.Add(this.LblDisclaimerHeader);
+            this.GroupBoxStorageAndStartup.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.GroupBoxStorageAndStartup.Location = new System.Drawing.Point(3, 287);
+            this.GroupBoxStorageAndStartup.Name = "GroupBoxStorageAndStartup";
+            this.GroupBoxStorageAndStartup.Size = new System.Drawing.Size(485, 144);
+            this.GroupBoxStorageAndStartup.TabIndex = 7;
+            this.GroupBoxStorageAndStartup.TabStop = false;
+            this.GroupBoxStorageAndStartup.Text = "Storage && Startup";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(76, 51);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(394, 17);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "items will at most be stored (oldest non-favorites deleted first)";
+            // 
+            // ComboMaxItemsStored
+            // 
+            this.ComboMaxItemsStored.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboMaxItemsStored.FormattingEnabled = true;
+            this.ComboMaxItemsStored.Items.AddRange(new object[] {
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22",
+            "23",
+            "24",
+            "25",
+            "26",
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "33",
+            "34",
+            "35",
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45",
+            "46",
+            "47",
+            "48",
+            "49",
+            "50"});
+            this.ComboMaxItemsStored.Location = new System.Drawing.Point(13, 48);
+            this.ComboMaxItemsStored.Name = "ComboMaxItemsStored";
+            this.ComboMaxItemsStored.Size = new System.Drawing.Size(56, 24);
+            this.ComboMaxItemsStored.TabIndex = 15;
             // 
             // CheckStartOnBoot
             // 
             this.CheckStartOnBoot.AutoSize = true;
-            this.CheckStartOnBoot.Location = new System.Drawing.Point(13, 48);
+            this.CheckStartOnBoot.Location = new System.Drawing.Point(13, 78);
             this.CheckStartOnBoot.Name = "CheckStartOnBoot";
             this.CheckStartOnBoot.Size = new System.Drawing.Size(268, 21);
             this.CheckStartOnBoot.TabIndex = 13;
@@ -250,7 +309,7 @@
             // LblDisclaimerText
             // 
             this.LblDisclaimerText.AutoSize = true;
-            this.LblDisclaimerText.Location = new System.Drawing.Point(10, 89);
+            this.LblDisclaimerText.Location = new System.Drawing.Point(10, 119);
             this.LblDisclaimerText.Name = "LblDisclaimerText";
             this.LblDisclaimerText.Size = new System.Drawing.Size(428, 17);
             this.LblDisclaimerText.TabIndex = 11;
@@ -260,7 +319,7 @@
             // 
             this.LblDisclaimerHeader.AutoSize = true;
             this.LblDisclaimerHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblDisclaimerHeader.Location = new System.Drawing.Point(10, 72);
+            this.LblDisclaimerHeader.Location = new System.Drawing.Point(10, 102);
             this.LblDisclaimerHeader.Name = "LblDisclaimerHeader";
             this.LblDisclaimerHeader.Size = new System.Drawing.Size(83, 17);
             this.LblDisclaimerHeader.TabIndex = 8;
@@ -274,7 +333,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(3, 99);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(446, 94);
+            this.groupBox2.Size = new System.Drawing.Size(485, 94);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Activation";
@@ -320,7 +379,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(446, 90);
+            this.groupBox1.Size = new System.Drawing.Size(485, 90);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Display Items";
@@ -474,7 +533,7 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox3, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.GroupBoxStorageAndStartup, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.groupBox4, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 6);
             this.tableLayoutPanel1.Controls.Add(this.groupBox5, 0, 5);
@@ -486,11 +545,11 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 96F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 88F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 59F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 81F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(452, 606);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(491, 628);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // groupBox6
@@ -501,7 +560,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(3, 199);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(446, 82);
+            this.groupBox6.Size = new System.Drawing.Size(485, 82);
             this.groupBox6.TabIndex = 10;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Item Preview";
@@ -547,7 +606,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.BtnCancel;
-            this.ClientSize = new System.Drawing.Size(462, 616);
+            this.ClientSize = new System.Drawing.Size(501, 638);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -563,8 +622,8 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            this.GroupBoxStorageAndStartup.ResumeLayout(false);
+            this.GroupBoxStorageAndStartup.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -591,7 +650,7 @@
         private System.Windows.Forms.RadioButton RadioThemeGreen;
         private System.Windows.Forms.RadioButton RadioThemeDark;
         private System.Windows.Forms.RadioButton RadioThemeLight;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox GroupBoxStorageAndStartup;
         private System.Windows.Forms.CheckBox CheckStartOnBoot;
         private System.Windows.Forms.CheckBox CheckStorage;
         private System.Windows.Forms.Label LblDisclaimerText;
@@ -611,5 +670,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox ComboMaxPreviewLines;
         private System.Windows.Forms.CheckBox CheckPreviewEnabled;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox ComboMaxItemsStored;
     }
 }

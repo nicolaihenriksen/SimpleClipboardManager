@@ -1,3 +1,6 @@
+# Archived! Old and out-dated
+This repository was a fun little hobby project done many years ago. No longer relevant and thus archived.
+
 # Simple Clipboard Manager
 
 Available from the [Windows Store](https://www.microsoft.com/store/apps/9p68k1bl0m7g).
